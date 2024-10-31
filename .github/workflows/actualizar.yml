@@ -21,6 +21,4 @@ jobs:
       # Paso 1: Clonar el código del repositorio
     - uses: actions/checkout@v4
 
-      # Paso 2: Renombrar .env.example a .env
-    - name: Rename .env.example to .env
-      run: mv .env.example .env
+     
