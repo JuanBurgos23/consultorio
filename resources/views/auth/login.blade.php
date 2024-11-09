@@ -4,7 +4,7 @@
 <head>
     <!-- Basic Page Info -->
     <meta charset="utf-8">
-    <title>DeskApp - Bootstrap Admin Dashboard HTML Template</title>
+    <title>Nutr-IA</title>
 
     <!-- Site favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('vendors/images/apple-touch-icon.png')}}">
@@ -88,12 +88,12 @@
                                         <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                         <label class="form-check-label" for="remember">
-                                            {{ __('Remember Me') }}
+                                            {{ __('Recordarme') }}
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="forgot-password"><a href="{{ route('password.request') }}">Forgot Password</a></div>
+                                    <div class="forgot-password"><a href="{{ route('password.request') }}">Has olvidado tu contraseña</a></div>
                                 </div>
                             </div>
                             <div class="row">

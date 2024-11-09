@@ -41,16 +41,16 @@
                                     @endforeach
                                 </p>
                                 <div class="profile-info">
-                                    <h5 class="mb-20 h5 text-blue">Contact Information</h5>
+                                    <h5 class="mb-20 h5 text-blue">Información del contacto</h5>
                                     <ul>
 
                                         <li>
-                                            <span>Email Address:</span>
+                                            <span>Dirección de correo electrónico:</span>
                                             {{auth::user()->email}}
                                         </li>
                                         @if ($paciente)
                                         <li>
-                                            <span>Phone Number:</span>
+                                            <span>Celular:</span>
                                             {{$paciente->celular ?? 'N/A'}}
                                         </li>
                                         <li>

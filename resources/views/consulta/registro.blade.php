@@ -30,12 +30,17 @@
                             </div>
 
 
-                            <div class="form-group row">
-                                <label class="col-sm-12 col-md-2 col-form-label">Objetivo</label>
-                                <div class="col-sm-12 col-md-10">
-                                    <input class="form-control" type="text" name="objetivo" required>
-                                </div>
-                            </div>
+                     <div class="form-group row">
+                             <label class="col-sm-12 col-md-2 col-form-label">Objetivo</label>
+                          <div class="col-sm-12 col-md-10">
+                         <select class="form-control" name="objetivo" required>
+                         <option value="" disabled selected>Selecciona un objetivo</option>
+                               <option value="subir">Subir de peso</option>
+                          <option value="bajar">Bajar de peso</option>
+                          <option value="mantener">Mantener el peso</option>
+                       </select>
+                         </div>
+                     </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-12 col-md-2 col-form-label">Fecha</label>

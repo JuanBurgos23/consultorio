@@ -4,7 +4,7 @@
 <head>
     <!-- Basic Page Info -->
     <meta charset="utf-8">
-    <title>DeskApp - Bootstrap Admin Dashboard HTML Template</title>
+    <title>Nutr-IA</title>
 
     <!-- Site favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('vendors/images/apple-touch-icon.png')}}">
@@ -79,7 +79,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Password</label>
+                                            <label class="col-sm-4 col-form-label">Contraseña</label>
                                             <div class="col-sm-8">
                                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
@@ -91,7 +91,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Password Confirmation</label>
+                                            <label class="col-sm-4 col-form-label">Confirmar Contraseña</label>
                                             <div class="col-sm-8">
                                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                             </div>
@@ -166,7 +166,7 @@
 
                                             <li>
                                                 <div class="row">
-                                                    <div class="col-sm-4 weight-600">Password</div>
+                                                    <div class="col-sm-4 weight-600">Contraseña</div>
                                                     <div class="col-sm-8" id="displayPassword">.....000</div>
                                                 </div>
                                             </li>

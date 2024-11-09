@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('examen', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('cardiacas');
+            $table->string('diabetes');
+           
+            $table->string('gastrointestinales');
+            $table->string('tiroides');
+            $table->string('renales');
+            $table->string('cancer');
+
             $table->timestamps();
         });
     }
