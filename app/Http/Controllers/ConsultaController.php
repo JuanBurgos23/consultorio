@@ -108,7 +108,7 @@ class ConsultaController extends Controller
 
         $examen = new Examen();
 
-        $examen->nombre = $request->especifica_gastrointestinales;
+       // $examen->nombre = $request->especifica_gastrointestinales;
 
         $examen->cardiacas = $request->cardiacas;
         $examen->diabetes = $request->diabetes;

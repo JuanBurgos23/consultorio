@@ -7,9 +7,9 @@
     <title>Nutr-IA</title>
 
     <!-- Site favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('vendors/images/apple-touch-icon.png')}}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('vendors/images/favicon-32x32.png')}}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('vendors/images/favicon-16x16.png')}}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('vendors/images/apple.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('vendors/images/favicon.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('vendors/images/favicon.png')}}">
 
     <!-- Mobile Specific Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -36,22 +36,32 @@
 </head>
 
 <body class="login-page">
-    <div class="login-header box-shadow">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="brand-logo">
-                <a href="login.html">
-                    <img src="vendors/images/deskapp-logo.svg" alt="">
-                </a>
-            </div>
-
+<div class="login-header box-shadow">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="brand-logo">
+            <a href="login.html" class="d-flex align-items-center">
+                <img src="vendors/images/favicon.png" alt="Logo" style="width: 30px; height: 30px; margin-right: 10px;">
+                <span style="font-size: 20px; font-weight: bold; color: #333;">NUTRIA</span>
+            </a>
         </div>
     </div>
+</div>
+
     <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-6 col-lg-7">
-                    <img src="{{asset('vendors/images/login-page-img.png')}}" alt="">
-                </div>
+            <div class="col-md-6 col-lg-7">
+            <div style="position: relative; display: inline-block; text-align: center;">
+                    <h2 style="position: absolute; top: 0%; left: 50%; transform: translateX(-50%);
+                               font-family: 'Roboto', sans-serif; color: #fff; font-size: 5rem;
+                               font-weight: bold; text-transform: uppercase; letter-spacing: 10px;
+                               text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8), 0 0 25px #000, 0 0 5px #000;">
+                        NUTRIA
+                    </h2>
+        <img src="{{asset('vendors/images/login.png')}}" alt="" style="width: 100%; border-radius: 10px;">
+    </div>
+</div>
+
                 <div class="col-md-6 col-lg-5">
                     <div class="login-box bg-white box-shadow border-radius-10">
                         <div class="login-title">
