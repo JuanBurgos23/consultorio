@@ -13,7 +13,12 @@ class Examen extends Model
     protected $fillable = [
         
         'id',
-        'nombre',
+        'cardiacas',
+        'diabetes',
+        'gastrointestinales',
+        'tiroides',
+        'renales',
+        'cancer',
         
         
         

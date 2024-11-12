@@ -13,9 +13,10 @@ class Condicion extends Model
     protected $fillable = [
         
         'id',
+        'operaciones',
         'alergia',
         'discapacidad',
-        'operaciones',
+        
         
         
     ];

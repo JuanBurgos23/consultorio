@@ -101,13 +101,22 @@ class ConsultaController extends Controller
         $imc->save();
 
         $condicion = new Condicion();
-        $condicion->alergia = $request->alergia;
         $condicion->operaciones = $request->operaciones;
+        $condicion->alergia = $request->alergia;
         $condicion->discapacidad = $request->discapacidad;
         $condicion->save();
 
         $examen = new Examen();
+
         $examen->nombre = $request->especifica_gastrointestinales;
+
+        $examen->cardiacas = $request->cardiacas;
+        $examen->diabetes = $request->diabetes;
+        $examen->gastrointestinales = $request->gastrointestinales;
+        $examen->tiroides = $request->tiroides;
+        $examen->renales = $request->renales;
+        $examen->cancer = $request->cancer;
+
         $examen->save();
 
 
@@ -134,9 +143,15 @@ class ConsultaController extends Controller
             'objetivo' => $request->objetivo,
             'peso' => $request->peso,
             'altura' => $request->altura,
+            'operaciones' => $request->operaciones,
             'alergia' => $request->alergia,
             'discapacidad' => $request->discapacidad,
-            'nombre_examen' => $request->nombre_examen
+            'cardiacas' => $request->cardiacas,
+            'diabetes' => $request->diabetes,
+            'gastrointestinales' => $request->gastrointestinales,
+            'tiroides' => $request->tiroides,
+            'renales' => $request->renales,
+            'cancer' => $request->cancer,
         ];
 
         // Obtener diagnóstico de la API
