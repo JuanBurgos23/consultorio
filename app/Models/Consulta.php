@@ -11,7 +11,7 @@ class Consulta extends Model
     protected $table = 'consulta';
     
     protected $fillable = [
-        
+        'id',
         'motivo',
         'objetivo',
         'id_imc',

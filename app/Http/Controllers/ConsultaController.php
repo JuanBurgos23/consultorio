@@ -11,6 +11,7 @@ use App\Models\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\JsonResponse;
 
 class ConsultaController extends Controller
 {
@@ -29,24 +30,6 @@ class ConsultaController extends Controller
         return view('consulta.mostrar_consulta', compact('consultas'));
     }
 
-    public function getWatsonDiagnosis($data)
-    {
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.watson.api_key'),
-        ])->post('https://api.us-east.assistant.watson.cloud.ibm.com/instances/faf748d4-e4d3-4b3f-b830-f3a95ce23c0b', [
-            'input' => [
-                'text' => "Diagnostica a un paciente con motivo: {$data['motivo']}, objetivo: {$data['objetivo']}, peso: {$data['peso']}, altura: {$data['altura']}, alergias: {$data['alergia']}, discapacidades: {$data['discapacidad']}, exámenes: {$data['nombre_examen']}",
-            ],
-        ]);
-
-        // Depurar la respuesta completa de Watson
-        dd($response->json());
-
-        // En lugar de dd, podrías usar Log si prefieres no interrumpir el flujo
-        // Log::info('Watson response:', $response->json());
-
-        return $response->json();
-    }
 
     public function storeConsulta(Request $request)
     {
@@ -61,6 +44,38 @@ class ConsultaController extends Controller
         return redirect()->route('consulta', ['consulta_id' => $consulta->id])
             ->with('success', 'Consulta registrada. Ahora ingresa los datos adicionales.');
     }
+    public function getDiagnosis($data)
+    {
+        // Realiza la solicitud a la API de Google
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . config('services.google.api_key'),
+            'Content-Type' => 'application/json'
+        ])->post('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent', [
+            "contents" => [
+                [
+                    "parts" => [
+                        [
+                            "text" => "Diagnostica a un paciente con motivo: {$data['motivo']}, objetivo: {$data['objetivo']}, peso: {$data['peso']}, altura: {$data['altura']}, alergias: {$data['alergia']}, discapacidades: {$data['discapacidad']}, exámenes: {$data['nombre_examen']}."
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        // Convertir la respuesta JSON a un arreglo
+        $diagnosticoResponse = $response->json();  // Esto convierte la respuesta JSON a un array
+
+        // Verifica que la respuesta contenga los datos esperados
+        if (!isset($diagnosticoResponse['candidates'][0]['content']['parts'][0]['text'])) {
+            return response()->json(['error' => 'No se pudo obtener un diagnóstico válido.'], 400);
+        }
+
+        // Obtener el texto del diagnóstico
+        $detalle = $diagnosticoResponse['candidates'][0]['content']['parts'][0]['text'];
+
+        return $detalle;
+    }
+
 
     public function store(Request $request)
     {
@@ -92,7 +107,7 @@ class ConsultaController extends Controller
         $condicion->save();
 
         $examen = new Examen();
-        $examen->nombre = $request->nombre_examen;
+        $examen->nombre = $request->especifica_gastrointestinales;
         $examen->save();
 
 
@@ -113,7 +128,7 @@ class ConsultaController extends Controller
         $consulta->save();
 
 
-        // Obtener los datos de la consulta para enviar a Watson
+        // Obtener los datos de la consulta para enviar a la API
         $data = [
             'motivo' => $request->motivo,
             'objetivo' => $request->objetivo,
@@ -124,17 +139,18 @@ class ConsultaController extends Controller
             'nombre_examen' => $request->nombre_examen
         ];
 
-        // Obtener el diagnóstico desde Watson
-        $diagnosticoWatson = $this->getWatsonDiagnosis($data);
+        // Obtener diagnóstico de la API
+        $diagnostico = $this->getDiagnosis($data);
 
-        // Depurar el diagnóstico retornado por Watson
-        // Asegúrate de que existe el campo esperado antes de asignarlo
-        $detalle = $diagnosticoWatson['output']['text'] ?? 'No se pudo obtener un diagnóstico';
+        // Verificar si el diagnóstico es válido
+        if ($diagnostico === 'No se pudo obtener un diagnóstico') {
+            return redirect()->back()->withErrors(['error' => 'No se pudo obtener un diagnóstico válido.']);
+        }
 
         // Guardar el diagnóstico en la tabla "diagnostico"
         $diagnostico = new Diagnostico();
         $diagnostico->id_consulta = $consulta->id;
-        $diagnostico->detalle = $detalle; // Almacenar el detalle
+        $diagnostico->detalle = $diagnostico; // Almacenar el detalle
         $diagnostico->save();
         // Redirigir a la vista de consulta
         return redirect()->route('mostrar_consulta')->with('success', 'Datos adicionales registrados correctamente.');

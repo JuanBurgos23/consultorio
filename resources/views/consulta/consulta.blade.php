@@ -48,80 +48,80 @@
                                 </section>
                                 <!-- Step 3 -->
                                 <h5>Condición</h5>
-<section>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>¿Tienes algún fierro o implante en el cuerpo debido a una operación?</label>
-                <div>
-                    <label><input type="radio" name="implante" value="si" required> Sí</label>
-                    <label><input type="radio" name="implante" value="no" required> No</label>
-                </div>
-                <input type="text" class="form-control mt-2" name="especifica_implante" placeholder="Especifica si seleccionaste 'Sí'">
-            </div>
+                                <section>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>¿Tienes algún fierro o implante en el cuerpo debido a una operación?</label>
+                                                <div>
+                                                    <label><input type="radio" name="" value="si" required> Sí</label>
+                                                    <label><input type="radio" name="operaciones" value="no" required> No</label>
+                                                </div>
+                                                <input type="text" class="form-control mt-2" name="" placeholder="Especifica si seleccionaste 'Sí'">
+                                            </div>
 
-            <div class="form-group">
-                <label>¿Tienes alguna discapacidad?</label>
-                <div>
-                    <label><input type="radio" name="discapacidad" value="si" required> Sí</label>
-                    <label><input type="radio" name="discapacidad" value="no" required> No</label>
-                </div>
-                <input type="text" class="form-control mt-2" name="especifica_discapacidad" placeholder="Especifica si seleccionaste 'Sí'">
-            </div>
+                                            <div class="form-group">
+                                                <label>¿Tienes alguna discapacidad?</label>
+                                                <div>
+                                                    <label><input type="radio" name="discapacidad" value="si" required> Sí</label>
+                                                    <label><input type="radio" name="" value="no" required> No</label>
+                                                </div>
+                                                <input type="text" class="form-control mt-2" name="especifica_discapacidad" placeholder="Especifica si seleccionaste 'Sí'">
+                                            </div>
 
-            <div class="form-group">
-                <label>¿Tienes alergias conocidas?</label>
-                <div>
-                    <label><input type="radio" name="alergias" value="si" required> Sí</label>
-                    <label><input type="radio" name="alergias" value="no" required> No</label>
-                </div>
-                <input type="text" class="form-control mt-2" name="especifica_alergias" placeholder="Especifica si seleccionaste 'Sí'">
-            </div>
+                                            <div class="form-group">
+                                                <label>¿Tienes alergias conocidas?</label>
+                                                <div>
+                                                    <label><input type="radio" name="alergia" value="si" required> Sí</label>
+                                                    <label><input type="radio" name="" value="no" required> No</label>
+                                                </div>
+                                                <input type="text" class="form-control mt-2" name="" placeholder="Especifica si seleccionaste 'Sí'">
+                                            </div>
 
-            <div class="form-group">
-                <label>Preferencias Alimenticias:</label>
-                <div>
-                    <label><input type="checkbox" name="preferencias[]" value="vegetariano"> Vegetariano</label><br>
-                    <label><input type="checkbox" name="preferencias[]" value="vegano"> Vegano</label><br>
-                    <label><input type="checkbox" name="preferencias[]" value="sin_gluten"> Sin gluten</label><br>
-                    <label><input type="checkbox" name="preferencias[]" value="bajo_carbohidratos"> Bajo en carbohidratos</label><br>
-                    <label><input type="checkbox" name="preferencias[]" value="otros"> Otros (especificar):</label>
-                    <input type="text" class="form-control mt-2" name="especifica_preferencias" placeholder="">
-                </div>
-            </div>
+                                            <div class="form-group">
+                                                <label>Preferencias Alimenticias:</label>
+                                                <div>
+                                                    <label><input type="checkbox" name="preferencias[]" value="vegetariano"> Vegetariano</label><br>
+                                                    <label><input type="checkbox" name="preferencias[]" value="vegano"> Vegano</label><br>
+                                                    <label><input type="checkbox" name="preferencias[]" value="sin_gluten"> Sin gluten</label><br>
+                                                    <label><input type="checkbox" name="preferencias[]" value="bajo_carbohidratos"> Bajo en carbohidratos</label><br>
+                                                    <label><input type="checkbox" name="preferencias[]" value="otros"> Otros (especificar):</label>
+                                                    <input type="text" class="form-control mt-2" name="especifica_preferencias" placeholder="">
+                                                </div>
+                                            </div>
 
-            <div class="form-group">
-                <label>¿Hay algo más que debamos saber sobre tu salud?</label>
-                <textarea class="form-control" name="comentarios_adicionales" rows="3"></textarea>
-            </div>
-        </div>
-    </div>
-</section>
+                                            <div class="form-group">
+                                                <label>¿Hay algo más que debamos saber sobre tu salud?</label>
+                                                <textarea class="form-control" name="comentarios_adicionales" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
 
                                 <!-- Step 4 -->
                                 <h5>Examen</h5>
-    <section>
-    <div class="form-group">
-        <label>Por favor, marca todas las enfermedades que tienes diagnosticadas:</label><br>
-        <label><input type="checkbox" name="enfermedades[]" value="diabetes"> Diabetes</label><br>
-        <label><input type="checkbox" name="enfermedades[]" value="hipertension"> Hipertensión</label><br>
-        <label><input type="checkbox" name="enfermedades[]" value="enfermedad_cardíaca"> Enfermedad cardíaca</label><br>
-        <label><input type="checkbox" name="enfermedades[]" value="asma"> Asma</label><br>
-        <label><input type="checkbox" name="enfermedades[]" value="enfermedad_pulmonar_cronica"> Enfermedad pulmonar crónica</label><br>
-        <label><input type="checkbox" name="enfermedades[]" value="enfermedades_gastrointestinales"> Enfermedades gastrointestinales (especificar):</label>
-        <input type="text" class="form-control mt-2" name="especifica_gastrointestinales" placeholder="">
-        <br>
-        <label><input type="checkbox" name="enfermedades[]" value="cancer"> Cáncer (especificar tipo):</label>
-        <input type="text" class="form-control mt-2" name="especifica_cancer" placeholder="">
-        <br>
-        <label><input type="checkbox" name="enfermedades[]" value="enfermedades_autoinmunes"> Enfermedades autoinmunes (especificar):</label>
-        <input type="text" class="form-control mt-2" name="especifica_autoinmunes" placeholder="">
-        <br>
-        <label><input type="checkbox" name="enfermedades[]" value="enfermedad_renal"> Enfermedad renal</label><br>
-        <label><input type="checkbox" name="enfermedades[]" value="otros"> Otros (especificar):</label>
-        <input type="text" class="form-control mt-2" name="especifica_otros" placeholder="">
-    </div>
-</section>
+                                <section>
+                                    <div class="form-group">
+                                        <label>Por favor, marca todas las enfermedades que tienes diagnosticadas:</label><br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="diabetes"> Diabetes</label><br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="hipertension"> Hipertensión</label><br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="enfermedad_cardíaca"> Enfermedad cardíaca</label><br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="asma"> Asma</label><br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="enfermedad_pulmonar_cronica"> Enfermedad pulmonar crónica</label><br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="enfermedades_gastrointestinales"> Enfermedades gastrointestinales (especificar):</label>
+                                        <input type="text" class="form-control mt-2" name="especifica_gastrointestinales" placeholder="">
+                                        <br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="cancer"> Cáncer (especificar tipo):</label>
+                                        <input type="text" class="form-control mt-2" name="especifica_cancer" placeholder="">
+                                        <br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="enfermedades_autoinmunes"> Enfermedades autoinmunes (especificar):</label>
+                                        <input type="text" class="form-control mt-2" name="especifica_autoinmunes" placeholder="">
+                                        <br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="enfermedad_renal"> Enfermedad renal</label><br>
+                                        <label><input type="checkbox" name="enfermedades[]" value="otros"> Otros (especificar):</label>
+                                        <input type="text" class="form-control mt-2" name="especifica_otros" placeholder="">
+                                    </div>
+                                </section>
 
 
                             </form>

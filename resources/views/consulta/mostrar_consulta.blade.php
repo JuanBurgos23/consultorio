@@ -36,11 +36,11 @@
                                 <tbody>
                                     @forelse ($consultas as $consulta)
                                     <tr>
-                                        <td class="table-plus">{{$consulta->paciente->nombre_completo}}</td>
-                                        <td class="table-plus">{{$consulta->paciente->edad}}</td>
-                                        <td class="table-plus">{{$consulta->paciente->direccion}}</td>
-                                        <td class="table-plus">{{$consulta->motivo}}</td>
-                                        <td class="table-plus">{{$consulta->imc->peso}}</td>
+                                        <td class="table-plus">{{$consulta->paciente->nombre_completo ?? "hola"}}</td>
+                                        <td class="table-plus">{{$consulta->paciente->edad ?? "hola"}}</td>
+                                        <td class="table-plus">{{$consulta->paciente->direccion ?? "hola"}}</td>
+                                        <td class="table-plus">{{$consulta->motivo ?? "hola"}}</td>
+                                        <td class="table-plus">{{$consulta->imc->peso ?? "hola"}}</td>
 
                                     </tr>
                                     @empty

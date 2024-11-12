@@ -23,10 +23,10 @@
     <link rel="stylesheet" type="text/css" href="{{asset('src/plugins/datatables/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('src/plugins/datatables/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/styles/style.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{asset('src/plugins/jquery-steps/jquery.steps.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('src/plugins/jquery-steps/jquery.steps.css')}}">
 
-    
-	
+
+
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
@@ -293,10 +293,10 @@
                             <span class="micon dw dw-notepad-2"></span><span class="mtext">Consultas</span>
                         </a>
                     </li>
-                    
+
                     <li>
-                        <a href="" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-calendar1"></span><span class="mtext">Calendar</span>
+                        <a href="{{ route('periodo') }}" class="dropdown-toggle no-arrow {{ Route::is('periodo') ? 'active' : '' }}">
+                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Periodo</span>
                         </a>
                     </li>
 
@@ -342,18 +342,18 @@
     <script src="{{asset('src/plugins/datatables/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{asset('src/plugins/datatables/js/responsive.bootstrap4.min.js')}}"></script>
     <script src="{{asset('vendors/scripts/dashboard.js')}}"></script>
-	<script src="{{asset('src/plugins/jquery-steps/jquery.steps.js')}}"></script>
-	<script src="{{asset('vendors/scripts/steps-setting.js')}}"></script>
+    <script src="{{asset('src/plugins/jquery-steps/jquery.steps.js')}}"></script>
+    <script src="{{asset('vendors/scripts/steps-setting.js')}}"></script>
 
-	<!-- buttons for Export datatable -->
-	<script src="{{asset('src/plugins/datatables/js/dataTables.buttons.min.js')}}"></script>
-	<script src="{{asset('src/plugins/datatables/js/buttons.bootstrap4.min.js')}}"></script>
-	<script src="{{asset('src/plugins/datatables/js/buttons.print.min.js')}}"></script>
-	<script src="{{asset('src/plugins/datatables/js/buttons.html5.min.js')}}"></script>
-	<script src="{{asset('src/plugins/datatables/js/buttons.flash.min.js')}}"></script>
-	<script src="{{asset('src/plugins/datatables/js/pdfmake.min.js')}}"></script>
-	<script src="{{asset('src/plugins/datatables/js/vfs_fonts.js')}}"></script>
-	
+    <!-- buttons for Export datatable -->
+    <script src="{{asset('src/plugins/datatables/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('src/plugins/datatables/js/buttons.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('src/plugins/datatables/js/buttons.print.min.js')}}"></script>
+    <script src="{{asset('src/plugins/datatables/js/buttons.html5.min.js')}}"></script>
+    <script src="{{asset('src/plugins/datatables/js/buttons.flash.min.js')}}"></script>
+    <script src="{{asset('src/plugins/datatables/js/pdfmake.min.js')}}"></script>
+    <script src="{{asset('src/plugins/datatables/js/vfs_fonts.js')}}"></script>
+
     @stack('js')
 
 </body>
