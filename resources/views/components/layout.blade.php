@@ -9,8 +9,8 @@
 
     <!-- Site favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('vendors/images/apple-touch-icon.png')}}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('vendors/images/favicon-32x32.png')}}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('vendors/images/favicon-16x16.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('vendors/images/favicon.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('vendors/images/favicon.png')}}">
 
     <!-- Mobile Specific Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -52,7 +52,7 @@
 </head>
 
 <body class="{{ $bodyClass }}">
-    <div class="pre-loader">
+  <!--  <div class="pre-loader">
         <div class="pre-loader-box">
             <div class="loader-logo"><img src="vendors/images/deskapp-logo.svg" alt=""></div>
             <div class='loader-progress' id="progress_div">
@@ -63,7 +63,7 @@
                 Loading...
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="header">
         <div class="header-left">
@@ -248,15 +248,14 @@
         </div>
     </div>
     <div class="left-side-bar">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
         <div class="brand-logo">
-            <a href="">
-                <img src="vendors/images/deskapp-logo.svg" alt="" class="dark-logo">
-                <img src="vendors/images/deskapp-logo-white.svg" alt="" class="light-logo">
+            <a href="login.html" class="d-flex align-items-center">
+                <img src="vendors/images/favicon.png" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
+                <span style="font-size: 30px; font-weight: bold; color: white;">NUTRIA</span>
             </a>
-            <div class="close-sidebar" data-toggle="left-sidebar-close">
-                <i class="ion-close-round"></i>
-            </div>
         </div>
+    </div>
         <div class="menu-block customscroll">
             <div class="sidebar-menu">
                 <ul id="accordion-menu">

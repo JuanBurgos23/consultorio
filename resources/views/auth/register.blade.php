@@ -8,8 +8,8 @@
 
     <!-- Site favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('vendors/images/apple-touch-icon.png')}}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('vendors/images/favicon-32x32.png')}}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('vendors/images/favicon-16x16.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('vendors/images/favicon.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('vendors/images/favicon.png')}}">
 
     <!-- Mobile Specific Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -40,9 +40,10 @@
     <div class="login-header box-shadow">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="brand-logo">
-                <a href="login.html">
-                    <img src="{{asset('vendors/images/deskapp-logo.svg')}}" alt="">
-                </a>
+            <a href="login.html" class="d-flex align-items-center">
+                <img src="vendors/images/favicon.png" alt="Logo" style="width: 30px; height: 30px; margin-right: 10px;">
+                <span style="font-size: 20px; font-weight: bold; color: #333;">NUTRIA</span>
+            </a>
             </div>
             <div class="login-menu">
                 <ul>
@@ -55,7 +56,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6 col-lg-7">
-                    <img src="{{asset('vendors/images/register-page-img.png')}}" alt="">
+                    <img src="{{asset('vendors/images/register.png')}}" alt="">
                 </div>
                 <div class="col-md-6 col-lg-5">
                     <div class="register-box bg-white box-shadow border-radius-10">
