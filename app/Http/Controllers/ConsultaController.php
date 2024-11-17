@@ -30,6 +30,10 @@ class ConsultaController extends Controller
         return view('consulta.mostrar_consulta', compact('consultas'));
     }
 
+    private function calcularIMC($peso, $altura)
+    {
+        return $peso / ($altura * $altura);
+    }
 
     public function storeConsulta(Request $request)
     {
@@ -46,34 +50,21 @@ class ConsultaController extends Controller
     }
     public function getDiagnosis($data)
     {
-        // Realiza la solicitud a la API de Google
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.google.api_key'),
+            'Authorization' => 'Bearer ' . config('services.magicloops.api_key'),
             'Content-Type' => 'application/json'
-        ])->post('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent', [
-            "contents" => [
-                [
-                    "parts" => [
-                        [
-                            "text" => "Diagnostica a un paciente con motivo: {$data['motivo']}, objetivo: {$data['objetivo']}, peso: {$data['peso']}, altura: {$data['altura']}, alergias: {$data['alergia']}, discapacidades: {$data['discapacidad']}, exámenes: {$data['nombre_examen']}."
-                        ]
-                    ]
-                ]
-            ]
+        ])->post('https://magicloops.dev/api/loop/46eb7673-1a58-4d55-b190-83c2a0829a77/run?input=I+love+Magic+Loops%21', [
+            'data' => $data
         ]);
 
-        // Convertir la respuesta JSON a un arreglo
-        $diagnosticoResponse = $response->json();  // Esto convierte la respuesta JSON a un array
+        // Procesa la respuesta JSON y devuelve el diagnóstico
+        $diagnosticoResponse = $response->json();
 
-        // Verifica que la respuesta contenga los datos esperados
-        if (!isset($diagnosticoResponse['candidates'][0]['content']['parts'][0]['text'])) {
-            return response()->json(['error' => 'No se pudo obtener un diagnóstico válido.'], 400);
+        if (!isset($diagnosticoResponse['result']['diagnosis'])) {
+            return 'No se pudo obtener un diagnóstico válido.';
         }
 
-        // Obtener el texto del diagnóstico
-        $detalle = $diagnosticoResponse['candidates'][0]['content']['parts'][0]['text'];
-
-        return $detalle;
+        return $diagnosticoResponse['result']['diagnosis'];
     }
 
 

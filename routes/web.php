@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AlimentoController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\DiagnosticoController;
+use App\Http\Controllers\DietaController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\PeriodoController;
 use Illuminate\Support\Facades\Route;
@@ -45,4 +47,14 @@ Route::post('/generar-diagnostico', [DiagnosticoController::class, 'store']);
 Route::get('/Periodo',[PeriodoController::class,'index'])->name('periodo');
 Route::post('/registrar/periodo',[PeriodoController::class,'store'])->name('registrar_periodo');
 
+//Alimento
+Route::get('/Alimento',[AlimentoController::class,'index'])->name('alimento');
+Route::post('registrar-alimento',[AlimentoController::class,'store']);
+
+//Dieta
+Route::get('/Dieta',[DietaController::class,'index'])->name('dieta');
+
+Route::get('/periodos', [PeriodoController::class, 'obtenerPeriodos']);
+Route::get('/dias/{idPeriodo}', [PeriodoController::class, 'obtenerDias']);
+Route::get('/horas/{idDia}', [PeriodoController::class, 'obtenerHoras']);
 

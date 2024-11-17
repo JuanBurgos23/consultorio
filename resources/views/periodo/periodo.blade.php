@@ -30,7 +30,7 @@
                             <div class="col-md-4 col-sm-12 text-center">
                                 <label>Seleccionar Días</label>
                                 <select id="dias_disponibles" name="dias[]" class="custom-select2 form-control" multiple="multiple" style="width: 100%;">
-                                    @foreach($dias as $dia)
+                                    @foreach($diasS as $dia)
                                     <option value="{{ $dia->id }}">{{ $dia->nombre }}</option>
                                     @endforeach
                                 </select><br>
@@ -102,23 +102,31 @@
                                 <table class="table hover multiple-select-row data-table-export nowrap">
                                     <thead>
                                         <tr>
-                                            <th class="table-plus datatable-nosort">Nombre</th>
+                                            <th class="table-plus datatable-nosort">Periodo</th>
                                             <th>Dia</th>
-                                            <th>Hora</th>
+                                            <th>Horas</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($horarios as $horario)
+                                        @foreach ($horarios as $periodoNombre => $dias)
+                                        @php $mostrarNombrePeriodo = true; @endphp <!-- Variable de control para mostrar el nombre del período solo una vez -->
+
+                                        @foreach ($dias as $diaNombre => $horas)
                                         <tr>
-                                            <td class="table-plus">{{$horario->periodo->nombre ?? "N/A"}}</td>
-                                            <td class="table-plus">{{$horario->dia->nombre ?? "N/A"}}</td>
-                                            <td class="table-plus">{{$horario->hora ?? "N/A"}}</td>
+                                            <!-- Nombre del periodo solo en la primera fila de su grupo -->
+                                            @if ($mostrarNombrePeriodo)
+                                            <td rowspan="{{ count($dias) }}" class="table-plus">
+                                                {{ $periodoNombre }}
+                                            </td>
+                                            @php $mostrarNombrePeriodo = false; @endphp
+                                            @endif
+
+                                            <!-- Nombre del día y horas -->
+                                            <td>{{ $diaNombre }}</td>
+                                            <td>{{ $horas->pluck('hora')->implode(', ') }}</td>
                                         </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center">No hay horarios registrados.</td>
-                                        </tr>
-                                        @endforelse
+                                        @endforeach
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

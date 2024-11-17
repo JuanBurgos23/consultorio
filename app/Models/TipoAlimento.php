@@ -10,6 +10,12 @@ class TipoAlimento extends Model
     use HasFactory;
     protected $table = 'tipo_alimento';
     protected $fillable = [
+        'id',
         'nombre'
     ];
+
+    public function alimentos()
+    {
+        return $this->hasMany(Alimento::class, 'id_tipoAlimento');
+    }
 }

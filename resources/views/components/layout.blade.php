@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('src/plugins/datatables/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/styles/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('src/plugins/jquery-steps/jquery.steps.css')}}">
+    
 
 
 
@@ -167,7 +168,7 @@
                 </div>
             </div>
             <div class="github-link">
-                <a href="https://github.com/dropways/deskapp" target="_blank"><img src="vendors/images/github.svg" alt=""></a>
+                <a href="https://github.com/JuanBurgos23" target="_blank"><img src="vendors/images/github.svg" alt=""></a>
             </div>
         </div>
     </div>
@@ -299,10 +300,15 @@
                             <span class="micon dw dw-notepad-2"></span><span class="mtext">Periodo</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('alimento') }}" class="dropdown-toggle no-arrow {{ Route::is('alimento') ? 'active' : '' }}">
+                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Alimento</span>
+                        </a>
+                    </li>
 
                     <li>
-                        <a href="" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-chat3"></span><span class="mtext">Chat</span>
+                        <a href="{{ route('dieta') }}" class="dropdown-toggle no-arrow {{ Route::is('dieta') ? 'active' : '' }}">
+                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Dieta</span>
                         </a>
                     </li>
                     <li>

@@ -17,9 +17,9 @@ class Horario extends Model
     ];
 
     public function periodo(){
-        return $this->BelongsTo(Periodo::class,'id_periodo');
+        return $this->belongsTo(Periodo::class,'id_periodo');
     }
     public function dia(){
-        return $this->BelongsTo(Dia::class,'id_dia');
+        return $this->belongsTo(Dia::class,'id_dia');
     }
 }

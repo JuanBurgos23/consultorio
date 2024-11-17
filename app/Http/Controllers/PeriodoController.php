@@ -12,9 +12,16 @@ class PeriodoController extends Controller
 {
     public function index()
     {
-        $dias = Dia::all();
-        $horarios = Horario::with('periodo','dia')->get();
-        return view('periodo.periodo', compact('dias', 'horarios'));
+        // Cargamos los horarios agrupados por período y día
+        $diasS = Dia::all();
+        $horarios = Horario::with(['periodo', 'dia'])
+            ->get()
+            ->groupBy('periodo.nombre') // Agrupamos por nombre del período
+            ->map(function ($items) {
+                return $items->groupBy('dia.nombre'); // Agrupamos por nombre del día dentro de cada período
+            });
+
+        return view('periodo.periodo', compact('horarios', 'diasS'));
     }
 
     public function store(Request $request)
@@ -62,5 +69,27 @@ class PeriodoController extends Controller
         }
 
         return redirect()->back()->with('success', 'Periodo registrado con éxito.');
+    }
+
+    // Obtener todos los periodos
+    // Obtener todos los periodos
+    public function obtenerPeriodos()
+    {
+        $periodos = Periodo::all();
+        return response()->json($periodos);
+    }
+
+    public function obtenerDias($idPeriodo)
+    {
+        $dias = Dia::whereHas('horarios', function ($query) use ($idPeriodo) {
+            $query->where('id_periodo', $idPeriodo);
+        })->get();
+        return response()->json($dias);
+    }
+
+    public function obtenerHoras($idDia)
+    {
+        $horas = Horario::where('id_dia', $idDia)->get();
+        return response()->json($horas);
     }
 }

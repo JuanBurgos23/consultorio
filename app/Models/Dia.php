@@ -13,4 +13,9 @@ class Dia extends Model
         'id',
         'nombre'
     ];
+
+    public function horarios()
+    {
+        return $this->hasMany(Horario::class, 'id_dia');
+    }
 }
