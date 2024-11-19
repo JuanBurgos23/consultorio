@@ -28,7 +28,7 @@
                             </div>
                             <div class="col-md-4 col-sm-12 text-center">
                                 <div class="form-group">
-                                    <label>Nombre Ejercicio</label>
+                                    <label>Nombre Ejercicios</label>
                                     <input name="nombreEjercicio" class="form-control" type="text" required>
                                 </div>
                             </div>
