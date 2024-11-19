@@ -16,6 +16,7 @@ class DiaSeeder extends Seeder
      */
     public function run(): void
     {
+        
         try {
             DB::beginTransaction();
             Dia::create([

@@ -22,7 +22,9 @@ class Alimento extends Model
         'id_tipoAlimento'
     ];
 
-    public function tipoAlimento(){
-        return $this->belongsTo(TipoAlimento::class,'id_tipoAlimento');
+    public function tipoAlimento()
+    {
+        return $this->belongsTo(TipoAlimento::class, 'id_tipoAlimento');
     }
+    
 }

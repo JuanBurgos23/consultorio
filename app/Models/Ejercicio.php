@@ -14,6 +14,9 @@ class Ejercicio extends Model
         'descripcion',
         'id_tipoEjercicio',
         'id_rutina',
+        'series',
+        'repeticiones',
+        'descanso',
         'id_dia'
     ];
 
@@ -21,9 +24,7 @@ class Ejercicio extends Model
         return $this->belongsTo(TipoEjercicio::class,'id_tipoEjercicio');
     }
 
-    public function rutina(){
-        return $this->belongsTo(Rutina::class,'id_rutina');
-    }
+    
     public function dia(){
         return $this->belongsTo(Dia::class,'id_dia');
     }

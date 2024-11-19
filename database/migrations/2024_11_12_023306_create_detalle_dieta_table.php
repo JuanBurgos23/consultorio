@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('detalle_dieta', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_alimento');
-            $table->unsignedBigInteger('id_periodo');
-            $table->id(); $table->string('nombre');
-            $table->string('cantidad');
-            $table->unsignedBigInteger('id_dieta');
-            $table->unsignedBigInteger('id_dia');
+            $table->unsignedBigInteger('id_alimento')->unique;
+            $table->unsignedBigInteger('id_periodo')->unique;
+            $table->unsignedBigInteger('id_dieta')->unique;
+            $table->unsignedBigInteger('id_dia')->unique;
+            $table->unsignedBigInteger('id_horario')->unique;
             $table->foreign('id_dieta')->references('id')->on('dieta');
             $table->foreign('id_alimento')->references('id')->on('alimento');
             $table->foreign('id_periodo')->references('id_periodo')->on('horario');
             $table->foreign('id_dia')->references('id_dia')->on('horario');
+            $table->foreign('id_horario')->references('id')->on('horario');
             $table->timestamps();
         });
     }

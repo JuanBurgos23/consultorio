@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('horario', function (Blueprint $table) {
+            $table->id();
             $table->string('hora');  //aqui cambie a varchar
             $table->unsignedBigInteger('id_periodo');
             $table->unsignedBigInteger('id_dia');

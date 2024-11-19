@@ -5,8 +5,10 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\DiagnosticoController;
 use App\Http\Controllers\DietaController;
+use App\Http\Controllers\EjercicioController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\PeriodoController;
+use App\Models\Ejercicio;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,8 +55,13 @@ Route::post('registrar-alimento',[AlimentoController::class,'store']);
 
 //Dieta
 Route::get('/Dieta',[DietaController::class,'index'])->name('dieta');
+Route::post('registrar-dieta',[DietaController::class,'store']);
 
 Route::get('/periodos', [PeriodoController::class, 'obtenerPeriodos']);
 Route::get('/dias/{idPeriodo}', [PeriodoController::class, 'obtenerDias']);
 Route::get('/horas/{idDia}', [PeriodoController::class, 'obtenerHoras']);
+
+//Ejercicio
+Route::get('/Ejercicio',[EjercicioController::class,'index'])->name('ejercicio');
+Route::post('registrar-ejercicio',[EjercicioController::class,'store']);
 

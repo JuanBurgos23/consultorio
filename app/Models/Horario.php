@@ -11,6 +11,7 @@ class Horario extends Model
     use HasFactory;
     protected $table = 'horario';
     protected $fillable = [
+        'id',
         'hora',
         'id_periodo',
         'id_dia'

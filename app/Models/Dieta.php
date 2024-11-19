@@ -13,8 +13,14 @@ class Dieta extends Model
         'nombre',
         'descripcion'
     ];
-    public function detalleDietas()
+    public function detalleDietas2()
     {
-        return $this->belongsToMany(DetalleDieta::class, 'detalle_dieta', 'id_dieta', 'id_alimento');
+        return $this->hasMany(DetalleDieta::class, 'id_dieta');  // Cambiado de belongsToMany a hasMany
+    }
+    public function detalleDietas1()
+    {
+        return $this->belongsToMany(Alimento::class, 'detalle_dieta', 'id_dieta', 'id_alimento')
+            ->withPivot('id_periodo', 'id_dia', 'id_horario') // Campos adicionales de la tabla pivot
+            ->withTimestamps(); // Para gestionar las fechas de creación/actualización
     }
 }

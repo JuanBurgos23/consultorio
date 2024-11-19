@@ -18,4 +18,5 @@ class Dia extends Model
     {
         return $this->hasMany(Horario::class, 'id_dia');
     }
+    
 }

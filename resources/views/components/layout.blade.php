@@ -311,8 +311,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-invoice"></span><span class="mtext">Invoice</span>
+                        <a href="{{ route('ejercicio') }}" class="dropdown-toggle no-arrow {{ Route::is('ejercicio') ? 'active' : '' }}">
+                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Ejercicio</span>
                         </a>
                     </li>
                     <li>

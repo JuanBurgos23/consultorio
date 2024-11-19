@@ -20,4 +20,5 @@ class Periodo extends Model
     {
         return $this->belongsToMany(Horario::class, 'horario', 'id_periodo', 'id_dia');
     }
+    
 }

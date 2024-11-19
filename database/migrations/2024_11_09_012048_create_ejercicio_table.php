@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('ejercicio', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('descripcion');
+            $table->string('descripcion')->nullable();
+            $table->string('series')->nullable();
+            $table->string('repeticiones')->nullable();
+            $table->string('descanso')->nullable();
             $table->unsignedBigInteger('id_tipoEjercicio');
-            $table->unsignedBigInteger('id_rutina');
             $table->unsignedBigInteger('id_dia');
             $table->foreign('id_tipoEjercicio')->references('id')->on('tipo_ejercicio');
-            $table->foreign('id_rutina')->references('id')->on('rutina');
             $table->foreign('id_dia')->references('id')->on('dia');
             $table->timestamps();
         });

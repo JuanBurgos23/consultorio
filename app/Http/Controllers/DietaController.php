@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alimento;
+use App\Models\DetalleDieta;
 use App\Models\Dieta;
 use App\Models\TipoAlimento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DietaController extends Controller
 {
@@ -13,6 +15,57 @@ class DietaController extends Controller
     {
         $alimentos = Alimento::with('tipoAlimento')->get(); // Cargar relación
         $tiposDeAlimentos = TipoAlimento::all();
-        return view('dieta.dieta', compact('alimentos', 'tiposDeAlimentos'));
+        $dietas = Dieta::with(['detalleDietas2.alimento', 'detalleDietas2.horario', 'detalleDietas2.periodo', 'detalleDietas2.dia'])
+            ->get();
+        return view('dieta.dieta', compact('alimentos', 'tiposDeAlimentos', 'dietas'));
+    }
+
+    public function store(Request $request)
+    {
+       
+
+        // Crear la dieta
+        $dieta = new Dieta();
+        $dieta->nombre = $request->nombreDieta;
+        $dieta->descripcion = $request->descripcionDieta;
+        $dieta->save();  // Guardamos la dieta para obtener su id
+
+        // Procesar alimentos seleccionados
+        $alimentosSeleccionados = explode(',', $request->alimentosSeleccionados);
+        $alimentosIds = array_map(function ($alimento) {
+            return explode('_', $alimento)[0];  // Tomamos el ID del alimento
+        }, $alimentosSeleccionados);
+
+        // Procesar periodos, días y horas
+        $periodos = $request->input('periodos', []);
+        $dias = $request->input('dias', []);
+        $horas = $request->input('horas', []);
+
+        // Verificar la longitud de los arrays
+        if (count($periodos) !== count($dias) || count($dias) !== count($horas)) {
+            return response()->json(['error' => 'Los datos de periodos, días y horas no coinciden.'], 400);
+        }
+
+        // Iterar sobre los alimentos seleccionados y registrar los detalles
+        foreach ($alimentosIds as $index => $alimentoId) {
+            $periodoId = $periodos[$index];  // Obtener periodo
+            $dia = $dias[$index];  // Obtener día
+            $hora = $horas[$index];  // Obtener hora
+
+            // Registrar el detalle en la tabla DetalleDieta
+            DetalleDieta::create([
+                'id_dieta' => $dieta->id,  // Usar el id de la dieta recién creada
+                'id_alimento' => $alimentoId,  // Id del alimento
+                'id_periodo' => $periodoId,  // Id del periodo
+                'id_dia' => $dia,  // Id del día
+                'id_horario' => $hora,  // Id de la hora
+            ]);
+
+            // Log para verificar que se ha insertado correctamente
+            Log::info("Registro insertado para: Alimento ID: $alimentoId, Periodo ID: $periodoId, Dia: $dia, Hora: $hora");
+        }
+
+        // Redirigir con éxito
+        return redirect()->back()->with('success', 'Dieta registrada con éxito.');
     }
 }

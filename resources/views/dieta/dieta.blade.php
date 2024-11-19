@@ -19,61 +19,25 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 col-sm-12">
-                                <form method="POST" action="registrar-alimento" enctype="multipart/form-data">
+                                <form method="POST" action="registrar-dieta" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
                                         <label>Nombre Dieta</label>
                                         <input name="nombreDieta" class="form-control" type="text" required>
-                                    </div>
-
-                                    <div>
-                                        <div id="contenedorAlimentos">
-                                            <!-- Aquí se añadirán dinámicamente los alimentos -->
-                                        </div>
-                                        <br>
-
 
                                     </div>
-
-
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            const contenedorAlimentos = document.getElementById('contenedorAlimentos');
-                                            const btnAgregarAlimento = document.getElementById('btnAgregarAlimento');
-                                            const btnEliminarAlimento = document.getElementById('btnEliminarAlimento');
-                                            let contadorAlimentos = 0;
-
-                                            // Agregar el primer denunciado al cargar la página
-                                            agregarAlimento();
-
-                                            // Event listener para el botón de agregar denunciado
-                                            btnAgregarAlimento.addEventListener('click', agregarAlimento);
-
-                                            // Event listener para el botón de eliminar denunciado
-                                            btnEliminarAlimento.addEventListener('click', eliminarUltimoAlimento);
-
-                                            function agregarAlimento() {
-                                                contadorAlimentos++;
-
-                                                // Crear div para el nuevo denunciado
-                                                const divAlimento = document.createElement('div');
-                                                divAlimento.id = `alimento${contadorAlimentos}`;
-                                                divAlimento.classList.add('campo');
-
-                                                // Contenido del div para el nuevo denunciado
-                                                divAlimento.innerHTML = `
-                              <!-- Selección de Alimentos -->                                                               
-                                            <div class="form-group">
-                                                <label>Seleccionar Alimento</label>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alimentosModal">
-                                                    Seleccionar Alimento
-                                                </button>
-                                            </div>                                  
-                                    
+                                    <!-- Selección de Alimentos -->
+                                    <div class="form-group">
+                                        <label>Seleccionar Alimento</label>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alimentosModal">
+                                            Seleccionar Alimento
+                                        </button>
+                                    </div>
                                     <div id="alimentosSeleccionados" class="mt-4">
                                         <h5>Alimentos Seleccionados:</h5>
                                         <!-- Campo oculto para almacenar los IDs de los alimentos seleccionados -->
-                                        <input type="hidden" id="alimentosSeleccionadosInput" name="alimentosSeleccionados">
+                                        <input type="hidden" id="alimentosSeleccionadosInput" name="alimentosSeleccionados" multiple>
+
                                         <ul id="listaAlimentosSeleccionados" class="list-group">
                                             <!-- Los alimentos seleccionados se mostrarán aquí -->
                                         </ul>
@@ -121,198 +85,177 @@
                                         </div>
                                     </div>
 
-
-                            `;
-
-                                                // Añadir nuevo div de alimento al contenedor
-                                                contenedorAlimentos.appendChild(divAlimento);
-                                                // Verifica los valores de los campos generados
-                                                console.log(`Se agregó alimento ${contadorAlimentos}`);
-                                                console.log(contenedorAlimentos); // Muestra el contenedor completo en la consola
-
-                                                // Mostrar el botón de eliminar si hay más de un denunciado
-                                                if (contadorAlimentos > 1) {
-                                                    btnEliminarAlimento.style.display = 'block';
+                                    <script>
+                                        // Filtrar alimentos por tipo
+                                        filtroTipoAlimento.addEventListener('change', function() {
+                                            const tipoSeleccionado = filtroTipoAlimento.value;
+                                            document.querySelectorAll('.alimento-item').forEach(item => {
+                                                if (!tipoSeleccionado || item.getAttribute('data-tipo') === tipoSeleccionado) {
+                                                    item.style.display = '';
+                                                } else {
+                                                    item.style.display = 'none';
                                                 }
-                                            }
-
-
-                                            function eliminarUltimoAlimento() {
-                                                const ultimoAlimento = contenedorAlimentos.lastElementChild;
-                                                if (ultimoAlimento && contadorAlimentos > 1) {
-                                                    contenedorAlimentos.removeChild(ultimoAlimento);
-                                                    contadorAlimentos--;
-
-                                                    // Ocultar el botón de eliminar si queda solo un alimento
-                                                    if (contadorAlimentos === 1) {
-                                                        btnEliminarAlimento.style.display = 'none';
-                                                    }
-                                                }
-                                            }
+                                            });
                                         });
 
+                                        // Seleccionar un alimento
+                                        window.seleccionarAlimento = function(id, nombre) {
+                                            // Generar un identificador único basado en el tiempo o un contador
+                                            const uniqueId = `${id}_${Date.now()}`;
 
+                                            // Crear el contenedor para el alimento seleccionado
+                                            const li = document.createElement('li');
+                                            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                                            li.dataset.id = uniqueId;
 
+                                            // Crear los select dinámicamente con IDs únicos
+                                            li.innerHTML = `
+                                        ${nombre} 
+                                        <!--Select para el Periodo-->
+                                        <select class="form-control form-control-sm mt-2"id = "periodoSelect_${uniqueId}" name="periodos[]">
+                                         <option id="listaPeriodosSeleccionados" value = ""> Seleccione un Periodo </option> 
+                                         <!--Los periodos se cargarán dinámicamente aquí-->
+                                        </select> 
+                                        <select class="form-control form-control-sm mt-2" id = "diaSelect_${uniqueId}" disabled name="dias[]">
+                                         <option value=""> Seleccione un Día </option> 
+                                        </select> 
+                                        <select class="form-control form-control-sm mt-2" id = "horaSelect_${uniqueId}" disabled name="horas[]">
+                                         <option value=""> Seleccione una Hora </option> 
+                                        </select> 
+                                        <button type="button" class="btn btn-danger btn-sm ml-2" data- id="${uniqueId}"> Eliminar</button>
+                                        `;
 
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            const listaAlimentosSeleccionados = document.getElementById('listaAlimentosSeleccionados');
-                                            const alimentosSeleccionadosInput = document.getElementById('alimentosSeleccionadosInput');
-                                            const filtroTipoAlimento = document.getElementById('filtroTipoAlimento');
-                                            const listaAlimentos = document.getElementById('listaAlimentos');
+                                            // Añadir el alimento a la lista
+                                            listaAlimentosSeleccionados.appendChild(li);
 
-                                            // Filtrar alimentos por tipo
-                                            filtroTipoAlimento.addEventListener('change', function() {
-                                                const tipoSeleccionado = filtroTipoAlimento.value;
-                                                document.querySelectorAll('.alimento-item').forEach(item => {
-                                                    if (!tipoSeleccionado || item.getAttribute('data-tipo') === tipoSeleccionado) {
-                                                        item.style.display = '';
-                                                    } else {
-                                                        item.style.display = 'none';
-                                                    }
-                                                });
-                                            });
-
-                                            // Seleccionar un alimento
-                                            window.seleccionarAlimento = function(id, nombre) {
-                                                // Crear el contenedor para el alimento seleccionado y sus inputs
-                                                const li = document.createElement('li');
-                                                li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                                                li.dataset.id = id;
-
-                                                // Crear los select dinámicamente para Periodo, Día y Hora
-                                                li.innerHTML = `
-        ${nombre}
-        <!-- Select para el Periodo -->
-        <select class="form-control form-control-sm mt-2" id="periodoSelect_${id}">
-            <option value="">Seleccione un Periodo</option>
-            <!-- Los periodos se cargarán dinámicamente aquí -->
-        </select>
-        
-        <!-- Select para el Día -->
-        <select class="form-control form-control-sm mt-2" id="diaSelect_${id}" disabled>
-            <option value="">Seleccione un Día</option>
-            <!-- Los días se cargarán dinámicamente aquí -->
-        </select>
-        
-        <!-- Select para la Hora -->
-        <select class="form-control form-control-sm mt-2" id="horaSelect_${id}" disabled>
-            <option value="">Seleccione una Hora</option>
-            <!-- Las horas se cargarán dinámicamente aquí -->
-        </select>
-        
-        <button type="button" class="btn btn-danger btn-sm ml-2" data-id="${id}">Eliminar</button>
-    `;
-
-                                                // Añadir el alimento a la lista de seleccionados
-                                                listaAlimentosSeleccionados.appendChild(li);
-
-                                                // Cargar los periodos
-                                                cargarPeriodos(id);
-
-                                                // Actualizar el input oculto con los IDs seleccionados
-                                                actualizarAlimentosSeleccionados();
-
-                                                // Cerrar el modal
-                                                $('#alimentosModal').modal('hide');
-                                            };
-
-                                            // Función para cargar los periodos
-                                            function cargarPeriodos(id) {
-                                                fetch('/periodos')
-                                                    .then(response => response.json())
-                                                    .then(data => {
-                                                        const periodoSelect = document.getElementById(`periodoSelect_${id}`);
-                                                        data.forEach(periodo => {
-                                                            const option = document.createElement('option');
-                                                            option.value = periodo.id;
-                                                            option.textContent = periodo.nombre;
-                                                            periodoSelect.appendChild(option);
-                                                        });
-
-                                                        // Escuchar cambios en el select de periodo para cargar los días
-                                                        periodoSelect.addEventListener('change', function() {
-                                                            cargarDias(id, periodoSelect.value);
-                                                        });
-                                                    });
-                                            }
-
-                                            // Función para cargar los días según el periodo
-                                            function cargarDias(id, periodoId) {
-                                                const diaSelect = document.getElementById(`diaSelect_${id}`);
-                                                const horaSelect = document.getElementById(`horaSelect_${id}`);
-
-                                                // Limpiar los días y las horas
-                                                diaSelect.innerHTML = '<option value="">Seleccione un Día</option>';
-                                                horaSelect.innerHTML = '<option value="">Seleccione una Hora</option>';
-                                                horaSelect.disabled = true;
-
-                                                if (periodoId) {
-                                                    fetch(`/dias/${periodoId}`)
-                                                        .then(response => response.json())
-                                                        .then(data => {
-                                                            data.forEach(dia => {
-                                                                const option = document.createElement('option');
-                                                                option.value = dia.id;
-                                                                option.textContent = dia.nombre;
-                                                                diaSelect.appendChild(option);
-                                                            });
-                                                            diaSelect.disabled = false;
-
-                                                            // Escuchar cambios en el select de día para cargar las horas
-                                                            diaSelect.addEventListener('change', function() {
-                                                                cargarHoras(id, diaSelect.value);
-                                                            });
-                                                        });
-                                                } else {
-                                                    diaSelect.disabled = true;
-                                                }
-                                            }
-
-                                            // Función para cargar las horas según el día
-                                            function cargarHoras(id, diaId) {
-                                                const horaSelect = document.getElementById(`horaSelect_${id}`);
-
-                                                // Limpiar las horas
-                                                horaSelect.innerHTML = '<option value="">Seleccione una Hora</option>';
-
-                                                if (diaId) {
-                                                    fetch(`/horas/${diaId}`)
-                                                        .then(response => response.json())
-                                                        .then(data => {
-                                                            data.forEach(hora => {
-                                                                const option = document.createElement('option');
-                                                                option.value = hora.id;
-                                                                option.textContent = hora.hora;
-                                                                horaSelect.appendChild(option);
-                                                            });
-                                                            horaSelect.disabled = false;
-                                                        });
-                                                } else {
-                                                    horaSelect.disabled = true;
-                                                }
-                                            }
-
-                                            // Delegación de eventos para eliminar un alimento
-                                            document.getElementById('listaAlimentosSeleccionados').addEventListener('click', function(event) {
-                                                // Verificar si el elemento clickeado es un botón de eliminar
-                                                if (event.target && event.target.matches('button.btn-danger')) {
-                                                    const li = event.target.closest('li');
-                                                    if (li) {
-                                                        // Eliminar el alimento de la lista
-                                                        li.remove();
-                                                        // Actualizar los IDs de los alimentos seleccionados
-                                                        actualizarAlimentosSeleccionados();
-                                                    }
-                                                }
-                                            });
+                                            // Cargar los periodos
+                                            cargarPeriodos(uniqueId);
 
                                             // Actualizar el input oculto con los IDs seleccionados
-                                            function actualizarAlimentosSeleccionados() {
-                                                const ids = Array.from(listaAlimentosSeleccionados.children).map(li => li.dataset.id);
-                                                alimentosSeleccionadosInput.value = ids.join(',');
+                                            actualizarAlimentosSeleccionados();
+
+                                            // Cerrar el modal
+                                            $('#alimentosModal').modal('hide');
+                                        };
+
+                                        // Función para cargar los periodos
+                                        function cargarPeriodos(uniqueId) {
+                                            fetch('/periodos')
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    const periodoSelect = document.getElementById(`periodoSelect_${uniqueId}`);
+                                                    data.forEach(periodo => {
+                                                        const option = document.createElement('option');
+                                                        option.value = periodo.id;
+                                                        option.textContent = periodo.nombre;
+                                                        periodoSelect.appendChild(option);
+
+                                                    });
+
+                                                    // Escuchar cambios en el select de periodo para cargar los días
+                                                    periodoSelect.addEventListener('change', function() {
+                                                        cargarDias(uniqueId, periodoSelect.value);
+                                                    });
+                                                });
+                                        }
+                                        // Función para cargar los días según el periodo
+                                        function cargarDias(id, periodoId) {
+                                            const diaSelect = document.getElementById(`diaSelect_${id}`);
+                                            const horaSelect = document.getElementById(`horaSelect_${id}`);
+
+                                            // Limpiar los días y las horas
+                                            diaSelect.innerHTML = '<option name="dias[]  value="">Seleccione un Día</option>';
+                                            horaSelect.innerHTML = '<option name="horas[]  value="">Seleccione una Hora</option>';
+                                            horaSelect.disabled = true;
+
+                                            if (periodoId) {
+                                                fetch(`/dias/${periodoId}`)
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        data.forEach(dia => {
+                                                            const option = document.createElement('option');
+                                                            option.value = dia.id;
+                                                            option.textContent = dia.nombre;
+                                                            diaSelect.appendChild(option);
+                                                        });
+                                                        diaSelect.disabled = false;
+
+                                                        // Escuchar cambios en el select de día para cargar las horas
+                                                        diaSelect.addEventListener('change', function() {
+                                                            cargarHoras(id, diaSelect.value);
+                                                        });
+                                                    });
+                                            } else {
+                                                diaSelect.disabled = true;
+                                            }
+                                        }
+
+                                        // Función para cargar las horas según el día
+                                        function cargarHoras(id, diaId) {
+                                            const horaSelect = document.getElementById(`horaSelect_${id}`);
+
+                                            // Limpiar las horas
+                                            horaSelect.innerHTML = '<option name="horas[] value="">Seleccione una Hora</option>';
+
+                                            if (diaId) {
+                                                fetch(`/horas/${diaId}`)
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        data.forEach(hora => {
+                                                            const option = document.createElement('option');
+                                                            option.value = hora.id;
+                                                            option.textContent = hora.hora;
+                                                            horaSelect.appendChild(option);
+                                                        });
+                                                        horaSelect.disabled = false;
+                                                    });
+                                            } else {
+                                                horaSelect.disabled = true;
+                                            }
+                                        }
+
+                                        // Delegación de eventos para eliminar un alimento
+                                        document.getElementById('listaAlimentosSeleccionados').addEventListener('click', function(event) {
+                                            // Verificar si el elemento clickeado es un botón de eliminar
+                                            if (event.target && event.target.matches('button.btn-danger')) {
+                                                const li = event.target.closest('li');
+                                                if (li) {
+                                                    // Eliminar el alimento de la lista
+                                                    li.remove();
+                                                    // Actualizar los IDs de los alimentos seleccionados
+                                                    actualizarAlimentosSeleccionados();
+                                                    actualizarPeriodosSeleccionados();
+                                                }
                                             }
                                         });
+
+                                        // Actualizar el input oculto con los IDs seleccionados
+                                        function actualizarAlimentosSeleccionados() {
+                                            const ids = Array.from(listaAlimentosSeleccionados.children).map(li => li.dataset.id);
+                                            alimentosSeleccionadosInput.value = ids.join(',');
+                                        }
+
+                                        function obtenerPeriodosSeleccionados() {
+                                            const periodosSeleccionados = [];
+                                            document.querySelectorAll('[id^="periodoSelect_"]').forEach(select => {
+                                                if (select.value) {
+                                                    periodosSeleccionados.push(select.value);
+                                                }
+                                            });
+                                            return periodosSeleccionados;
+                                        }
+
+                                        // Función para actualizar periodos seleccionados
+                                        function actualizarPeriodosSeleccionados() {
+                                            const ids = Array.from(listaPeriodosSeleccionados.children).map(li => li.dataset.id);
+                                            periodosSeleccionadosInput.value = ids.join(',');
+                                        }
                                     </script>
+                            </div>
+                            <div class="col-md-4 col-sm-12 text-center">
+                                <label>Descripcion Dieta</label>
+                                <input name="descripcionDieta" class="form-control" type="text" required>
+
                             </div>
 
                             <div class="col-md-12 mt-4 text-center">
@@ -330,13 +273,28 @@
                                 <table class="table hover multiple-select-row data-table-export nowrap">
                                     <thead>
                                         <tr>
-                                            <th class="table-plus datatable-nosort">Tipo Alimento</th>
-                                            <th>Alimentos</th>
+                                            <th class="table-plus datatable-nosort">Dieta Nombre</th>
+                                            <th class="table-plus datatable-nosort">Dieta Descripcion</th>
+                                            <th>Alimento</th>
+                                            <th>Periodo</th>
+                                            <th>Dia</th>
+                                            <th>Hora</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        @foreach ($dietas as $dieta)
+                                        @foreach ($dieta->detalleDietas2 as $detalle)
+                                        <tr>
+                                            <td>{{ $dieta->nombre }}</td>
+                                            <td>{{ $dieta->descripcion }}</td>
+                                            <td>{{ $detalle->alimento->nombre ?? 'No disponible' }}</td>
+                                            <td>{{ $detalle->periodo->nombre ?? 'No disponible' }}</td>
+                                            <td>{{ $detalle->dia->nombre ?? 'No disponible' }}</td>
+                                            <td>{{ $detalle->horario->hora ?? 'No disponible' }}</td>
+                                        </tr>
+                                        @endforeach
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
