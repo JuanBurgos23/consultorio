@@ -17,16 +17,15 @@ class Ejercicio extends Model
         'series',
         'repeticiones',
         'descanso',
-        'id_dia'
+
     ];
 
-    public function tipoEjercicio(){
-        return $this->belongsTo(TipoEjercicio::class,'id_tipoEjercicio');
+    public function tipoEjercicio()
+    {
+        return $this->belongsTo(TipoEjercicio::class, 'id_tipoEjercicio');
     }
-
-    
-    public function dia(){
-        return $this->belongsTo(Dia::class,'id_dia');
+    public function dias()
+    {
+        return $this->belongsToMany(Dia::class, 'ejercicio_dia', 'id_ejercicio', 'id_dia');
     }
-
 }

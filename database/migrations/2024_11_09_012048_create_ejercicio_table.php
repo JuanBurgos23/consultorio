@@ -19,9 +19,7 @@ return new class extends Migration
             $table->string('repeticiones')->nullable();
             $table->string('descanso')->nullable();
             $table->unsignedBigInteger('id_tipoEjercicio');
-            $table->unsignedBigInteger('id_dia');
             $table->foreign('id_tipoEjercicio')->references('id')->on('tipo_ejercicio');
-            $table->foreign('id_dia')->references('id')->on('dia');
             $table->timestamps();
         });
     }

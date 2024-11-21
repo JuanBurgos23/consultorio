@@ -18,5 +18,8 @@ class Dia extends Model
     {
         return $this->hasMany(Horario::class, 'id_dia');
     }
-    
+    public function ejercicios()
+    {
+        return $this->belongsToMany(Ejercicio::class, 'ejercicio_dia', 'id_dia', 'id_ejercicio');
+    }
 }
