@@ -31,14 +31,14 @@ class AlimentoController extends Controller
             'alimentos.*.fibra' => 'nullable|string',
             'alimentos.*.vitamina' => 'nullable|string|max:255',
             'alimentos.*.potacio' => 'nullable|string',
-            'alimentos.*.imagen' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Valida que sea imagen
+           
         ]);
 
         // Buscar o crear el tipo de alimento
         $tipoAlimento = TipoAlimento::firstOrCreate(['nombre' => $validatedData['nombreAlimento']]);
 
         // Guardar los alimentos asociados
-        foreach ($validatedData['alimentos'] as $key => $alimentoData) {
+        foreach ($validatedData['alimentos'] as $key=> $alimentoData) {
             $alimento = new Alimento();
             $alimento->nombre = $alimentoData['nombre'];
             $alimento->caloria = $alimentoData['caloria'] ?? null;
@@ -50,9 +50,9 @@ class AlimentoController extends Controller
             $alimento->potacio = $alimentoData['potacio'] ?? null;
             $alimento->id_tipoAlimento = $tipoAlimento->id;
 
-            // Manejo de una sola imagen
-            if ($request->hasFile($alimentoData['imagen'])) {
-                $file = $request->file($alimentoData['imagen']);
+            // Manejo de la imagen de cada alimento
+            if ($request->hasFile("alimentos.{$key}.imagen")) {  // Cambia "alimentos.{$key}.imagen" a "imagen"
+                $file = $request->file("alimentos.{$key}.imagen");
                 $destinoPath = 'alimento_imagenes/';
                 $filename = time() . '-' . $file->getClientOriginalName();
                 $file->move(public_path($destinoPath), $filename);
