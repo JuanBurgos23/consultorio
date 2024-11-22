@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('fibra');
             $table->string('vitamina');
             $table->string('potacio');
+            $table->string('nombreImagen')->nullable();
             $table->unsignedBigInteger('id_tipoAlimento');
             $table->foreign('id_tipoAlimento')->references('id')->on('tipo_alimento');
             $table->timestamps();

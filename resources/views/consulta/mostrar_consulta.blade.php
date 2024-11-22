@@ -27,7 +27,6 @@
                                     <tr>
                                         <th class="table-plus datatable-nosort">Nombre Completo</th>
                                         <th>Edad</th>
-
                                         <th>Direccion</th>
                                         <th>Motivo Consulta</th>
                                         <th>Peso</th>
@@ -36,11 +35,11 @@
                                 <tbody>
                                     @forelse ($consultas as $consulta)
                                     <tr>
-                                        <td class="table-plus">{{$consulta->paciente->nombre_completo ?? "hola"}}</td>
-                                        <td class="table-plus">{{$consulta->paciente->edad ?? "hola"}}</td>
-                                        <td class="table-plus">{{$consulta->paciente->direccion ?? "hola"}}</td>
-                                        <td class="table-plus">{{$consulta->motivo ?? "hola"}}</td>
-                                        <td class="table-plus">{{$consulta->imc->peso ?? "hola"}}</td>
+                                        <td class="table-plus">{{$consulta->paciente->nombre_completo ?? "N/A"}}</td>
+                                        <td class="table-plus">{{$consulta->paciente->edad ?? "N/A"}}</td>
+                                        <td class="table-plus">{{$consulta->paciente->direccion ?? "N/A"}}</td>
+                                        <td class="table-plus">{{$consulta->motivo ?? "N/A"}}</td>
+                                        <td class="table-plus">{{$consulta->imc->peso ?? "N/A"}}</td>
 
                                     </tr>
                                     @empty

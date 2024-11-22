@@ -8,16 +8,19 @@ use App\Models\Diagnostico;
 use App\Models\Examen;
 use App\Models\IMC;
 use App\Models\Paciente;
+use App\Models\TipoExamen;
+use Database\Seeders\TipoExam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Http; // Importa la clase HTTP
 use Illuminate\Http\JsonResponse;
 
 class ConsultaController extends Controller
 {
     public function index()
     {
-        return view('consulta.consulta');
+        $tipoExamen = TipoExamen::all();
+        return view('consulta.consulta', compact('tipoExamen'));
     }
     public function registro()
     {
@@ -30,10 +33,7 @@ class ConsultaController extends Controller
         return view('consulta.mostrar_consulta', compact('consultas'));
     }
 
-    private function calcularIMC($peso, $altura)
-    {
-        return $peso / ($altura * $altura);
-    }
+
 
     public function storeConsulta(Request $request)
     {
@@ -48,44 +48,51 @@ class ConsultaController extends Controller
         return redirect()->route('consulta', ['consulta_id' => $consulta->id])
             ->with('success', 'Consulta registrada. Ahora ingresa los datos adicionales.');
     }
-    public function getDiagnosis($data)
+    public function ejecutarApi(Request $request)
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.magicloops.api_key'),
-            'Content-Type' => 'application/json'
-        ])->post('https://magicloops.dev/api/loop/46eb7673-1a58-4d55-b190-83c2a0829a77/run?input=I+love+Magic+Loops%21', [
-            'data' => $data
-        ]);
+        // URL de la API externa
+        $url = 'https://magicloops.dev/api/loop/9a518445-038e-4ac1-a96e-f3cffba71966/run';
 
-        // Procesa la respuesta JSON y devuelve el diagnóstico
-        $diagnosticoResponse = $response->json();
+        // Datos a enviar en la solicitud
+        $data = [
+            "peso" => $request,
+            "altura" => 1.75,
+            "condicion" => "ninguna",
+            "enfermedades" => "ninguna"
+        ];
 
-        if (!isset($diagnosticoResponse['result']['diagnosis'])) {
-            return 'No se pudo obtener un diagnóstico válido.';
+        // Realiza la solicitud POST
+        $response = Http::post($url, $data);
+
+        // Comprueba si la solicitud fue exitosa
+        if ($response->successful()) {
+            // Obtiene la respuesta en formato JSON
+            $responseData = $response->json();
+
+            // Devuelve la respuesta o procesa según necesidad
+            return response()->json($responseData);
+        } else {
+            // Maneja el error
+            return response()->json(['error' => 'Error al conectar con la API externa'], $response->status());
         }
-
-        return $diagnosticoResponse['result']['diagnosis'];
     }
-
 
     public function store(Request $request)
     {
-        // Obtener el consulta_id desde los parámetros de la consulta (de la URL)
-        $consulta_id = $request->input('consulta_id'); // o $request->consulta_id
+        // Validar la existencia de consulta_id
+        $consulta_id = $request->input('consulta_id');
 
-        // Verificar que el consulta_id no sea nulo
         if (!$consulta_id) {
             return redirect()->back()->withErrors(['error' => 'Consulta no encontrada.']);
         }
 
-        // Buscar la consulta con el consulta_id
+        // Buscar la consulta
         $consulta = Consulta::find($consulta_id);
-
         if (!$consulta) {
             return redirect()->back()->withErrors(['error' => 'Consulta no encontrada.']);
         }
 
-        // Crear los registros de IMC, Condición y Examen
+        // Crear registros de IMC, Condición y Examen
         $imc = new IMC();
         $imc->peso = $request->peso;
         $imc->altura = $request->altura;
@@ -98,28 +105,16 @@ class ConsultaController extends Controller
         $condicion->save();
 
         $examen = new Examen();
-
-       // $examen->nombre = $request->especifica_gastrointestinales;
-
-        $examen->cardiacas = $request->cardiacas;
-        $examen->diabetes = $request->diabetes;
-        $examen->gastrointestinales = $request->gastrointestinales;
-        $examen->tiroides = $request->tiroides;
-        $examen->renales = $request->renales;
-        $examen->cancer = $request->cancer;
-
+        $examen->descripcion = $request->descripcion;
+        $examen->id_tipoExamen = $request->examen;
         $examen->save();
 
-
-
-
-        // Asignar los registros de IMC, Condición y Examen a la consulta
+        // Asignar los registros a la consulta
         $consulta->id_imc = $imc->id;
         $consulta->id_condicion = $condicion->id;
         $consulta->id_examen = $examen->id;
-        //asignar el id del paciente autenticado
-        $paciente = Paciente::where('id_user', auth()->user()->id)->first();
 
+        $paciente = Paciente::where('id_user', auth()->user()->id)->first();
         if ($paciente) {
             $consulta->id_paciente = $paciente->id_paciente;
         } else {
@@ -127,38 +122,40 @@ class ConsultaController extends Controller
         }
         $consulta->save();
 
-
-        // Obtener los datos de la consulta para enviar a la API
-        $data = [
-            'motivo' => $request->motivo,
-            'objetivo' => $request->objetivo,
-            'peso' => $request->peso,
-            'altura' => $request->altura,
-            'operaciones' => $request->operaciones,
-            'alergia' => $request->alergia,
-            'discapacidad' => $request->discapacidad,
-            'cardiacas' => $request->cardiacas,
-            'diabetes' => $request->diabetes,
-            'gastrointestinales' => $request->gastrointestinales,
-            'tiroides' => $request->tiroides,
-            'renales' => $request->renales,
-            'cancer' => $request->cancer,
+        // Preparar los datos para la API
+        $datosAPI = [
+            "peso" => $imc->peso,
+            "altura" => $imc->altura,
+            "condicion" => $condicion->operaciones ?: 'ninguna',
+            "enfermedades" => $examen->descripcion ?: 'ninguna',
         ];
 
-        // Obtener diagnóstico de la API
-        $diagnostico = $this->getDiagnosis($data);
+        try {
+            // Enviar datos a la API externa
+            $response = Http::post('https://magicloops.dev/api/loop/9a518445-038e-4ac1-a96e-f3cffba71966/run', $datosAPI);
 
-        // Verificar si el diagnóstico es válido
-        if ($diagnostico === 'No se pudo obtener un diagnóstico') {
-            return redirect()->back()->withErrors(['error' => 'No se pudo obtener un diagnóstico válido.']);
+            if ($response->successful()) {
+                // Capturar el resultado de la API
+                $resultado = $response->json();
+            
+                // Asegúrate de que $resultado contenga el texto que quieres guardar
+                // Por ejemplo, si el campo que contiene el diagnóstico es 'diagnosis', puedes hacer:
+                $detalleDiagnostico = $resultado ?? 'Diagnóstico no especificado';
+            
+                // Crear el registro en la tabla diagnostico
+                $diagnostico = new Diagnostico();
+                $diagnostico->detalle = $detalleDiagnostico; // Guardar el texto directamente
+                $diagnostico->id_consulta = $consulta->id; // Relacionar el diagnóstico con la consulta
+                $diagnostico->save();
+            
+                // Redirigir a la vista de consulta con éxito
+                return redirect()->route('mostrar_consulta')->with('success', 'Datos registrados correctamente y diagnóstico guardado.');
+            } else {
+                return redirect()->back()->with('error', 'Error en la API externa: ' . $response->body());
+            }
+            
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al conectar con la API: ' . $e->getMessage());
         }
-
-        // Guardar el diagnóstico en la tabla "diagnostico"
-        $diagnostico = new Diagnostico();
-        $diagnostico->id_consulta = $consulta->id;
-        $diagnostico->detalle = $diagnostico; // Almacenar el detalle
-        $diagnostico->save();
-        // Redirigir a la vista de consulta
-        return redirect()->route('mostrar_consulta')->with('success', 'Datos adicionales registrados correctamente.');
     }
 }

@@ -46,22 +46,29 @@ Route::post('Registrar/Adicional', [ConsultaController::class, 'store'])->name('
 Route::post('/generar-diagnostico', [DiagnosticoController::class, 'store']);
 
 //periodo
-Route::get('/Periodo',[PeriodoController::class,'index'])->name('periodo');
-Route::post('/registrar/periodo',[PeriodoController::class,'store'])->name('registrar_periodo');
+Route::get('/Periodo', [PeriodoController::class, 'index'])->name('periodo');
+Route::post('/registrar/periodo', [PeriodoController::class, 'store'])->name('registrar_periodo');
 
 //Alimento
-Route::get('/Alimento',[AlimentoController::class,'index'])->name('alimento');
-Route::post('registrar-alimento',[AlimentoController::class,'store']);
+Route::get('/Alimento', [AlimentoController::class, 'index'])->name('alimento');
+Route::post('registrar-alimento', [AlimentoController::class, 'store']);
+Route::get('/alimento/edit/{id}', [AlimentoController::class, 'edit']);
+Route::put('/alimento-update/{id}', [AlimentoController::class, 'update']);
+Route::delete('/alimento/delete-image/{id}', [AlimentoController::class, 'deleteImage']);
+
 
 //Dieta
-Route::get('/Dieta',[DietaController::class,'index'])->name('dieta');
-Route::post('registrar-dieta',[DietaController::class,'store']);
+Route::get('/Dieta', [DietaController::class, 'index'])->name('dieta');
+Route::post('registrar-dieta', [DietaController::class, 'store']);
 
 Route::get('/periodos', [PeriodoController::class, 'obtenerPeriodos']);
 Route::get('/dias/{idPeriodo}', [PeriodoController::class, 'obtenerDias']);
 Route::get('/horas/{idDia}', [PeriodoController::class, 'obtenerHoras']);
 
 //Ejercicio
-Route::get('/Ejercicio',[EjercicioController::class,'index'])->name('ejercicio');
-Route::post('registrar-ejercicio',[EjercicioController::class,'store']);
+Route::get('/Ejercicio', [EjercicioController::class, 'index'])->name('ejercicio');
+Route::post('registrar-ejercicio', [EjercicioController::class, 'store']);
 
+
+//API
+Route::get('/llamar-api', [ConsultaController::class, 'ejecutarApi']);

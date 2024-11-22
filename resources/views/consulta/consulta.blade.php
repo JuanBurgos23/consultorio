@@ -64,93 +64,45 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Alergias:</label>
+                                                <input name="alergia" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Discapacidad:</label>
+                                                <select name="discapacidad" class="form-control">
+                                                    <option value="Ninguno">Ninguno</option>
+                                                    <option value="Implante de cadera">Manco</option>
+                                                    <option value="Implante de rodilla">Implante de rodilla</option>
+                                                    <option value="Implante de columna">Implante de columna</option>
+                                                    <option value="Implante de hombro">Implante de hombro</option>
+                                                    <option value="Implante de hombro">Implante de muñeca</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </section>
                                 <h5>Examen</h5>
                                 <section>
-                                    <div class="form-group">
-                                        <label>Diabetes:</label><br>
-                                        <input type="checkbox" id="diabetes_tipo_1" name="enfermedades_diabetes[]" value="Diabetes tipo 1">
-                                        <label for="diabetes_tipo_1">Diabetes tipo 1</label><br>
-
-                                        <input type="checkbox" id="diabetes_tipo_2" name="enfermedades_diabetes[]" value="Diabetes tipo 2">
-                                        <label for="diabetes_tipo_2">Diabetes tipo 2</label><br>
-
-                                        <input type="checkbox" id="prediabetes" name="enfermedades_diabetes[]" value="Prediabetes">
-                                        <label for="prediabetes">Prediabetes</label><br>
-
-                                        <input type="checkbox" id="ninguno_diabetes" name="ninguno_diabetes" value="Ninguno" onchange="toggleDiabetes(this)">
-                                        <label for="ninguno_diabetes">Ninguno</label>
+                                    <div class="col-md-4 col-sm-12 text-center">
+                                        <label>Seleccionar Tipos de Examen</label>
+                                        <select class="custom-select2 form-control" name="examen" style="width: 100%; height: 38px;">
+                                            @foreach($tipoExamen as $tipo)
+                                            <option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+                                            @endforeach
+                                        </select><br>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 text-center">
+                                        <div class="form-group">
+                                            <label>Especifique</label><br>
+                                            <input name="descripcion" type="text" class="form-control">
+                                        </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label>Enfermedades Gastrointestinales:</label><br>
-                                        <input type="checkbox" id="gastritis" name="enfermedades_gastrointestinales[]" value="Gastritis">
-                                        <label for="gastritis">Gastritis</label><br>
-
-                                        <input type="checkbox" id="celiaca" name="enfermedades_gastrointestinales[]" value="Enfermedad celíaca">
-                                        <label for="celiaca">Enfermedad celíaca</label><br>
-
-                                        <input type="checkbox" id="crohn" name="enfermedades_gastrointestinales[]" value="Enfermedad de Crohn">
-                                        <label for="crohn">Enfermedad de Crohn</label><br>
-
-                                        <input type="checkbox" id="sindrome" name="enfermedades_gastrointestinales[]" value="Síndrome del intestino irritable">
-                                        <label for="sindrome">Síndrome del intestino irritable</label><br>
-
-                                        <input type="checkbox" id="ninguno_gastrointestinales" name="ninguno_gastro" value="Ninguno" onchange="toggleGastrointestinales(this)">
-                                        <label for="ninguno_gastrointestinales">Ninguno</label>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Trastornos del Tiroides:</label><br>
-                                        <input type="checkbox" id="hipotiroidismo" name="enfermedades_tiroides[]" value="Hipotiroidismo">
-                                        <label for="hipotiroidismo">Hipotiroidismo</label><br>
-
-                                        <input type="checkbox" id="hipertiroidismo" name="enfermedades_tiroides[]" value="Hipertiroidismo">
-                                        <label for="hipertiroidismo">Hipertiroidismo</label><br>
-
-                                        <input type="checkbox" id="bocio" name="enfermedades_tiroides[]" value="Bocio">
-                                        <label for="bocio">Bocio</label><br>
-
-                                        <input type="checkbox" id="ninguno_tiroides" name="ninguno_tiroides" value="Ninguno" onchange="toggleTiroides(this)">
-                                        <label for="ninguno_tiroides">Ninguno</label>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Enfermedades Renales:</label><br>
-                                        <input type="checkbox" id="insuficiencia_renal" name="enfermedades_renales[]" value="Insuficiencia renal">
-                                        <label for="insuficiencia_renal">Insuficiencia renal</label><br>
-
-                                        <input type="checkbox" id="nefritis" name="enfermedades_renales[]" value="Nefritis">
-                                        <label for="nefritis">Nefritis</label><br>
-
-                                        <input type="checkbox" id="calculos" name="enfermedades_renales[]" value="Cálculos renales">
-                                        <label for="calculos">Cálculos renales</label><br>
-
-                                        <input type="checkbox" id="ninguno_renales" name="ninguno_renales" value="Ninguno" onchange="toggleRenales(this)">
-                                        <label for="ninguno_renales">Ninguno</label>
-                                    </div>
-
-
-
-                                    <div class="form-group">
-                                        <label>Cáncer:</label><br>
-                                        <input type="checkbox" id="cancer_mama" name="cancer[]" value="Cáncer de mama">
-                                        <label for="cancer_mama">Cáncer de mama</label><br>
-
-                                        <input type="checkbox" id="cancer_pulmon" name="cancer[]" value="Cáncer de pulmón">
-                                        <label for="cancer_pulmon">Cáncer de pulmón</label><br>
-
-                                        <input type="checkbox" id="cancer_prostata" name="cancer[]" value="Cáncer de próstata">
-                                        <label for="cancer_prostata">Cáncer de próstata</label><br>
-
-                                        <input type="checkbox" id="cancer_colon" name="cancer[]" value="Cáncer de colon">
-                                        <label for="cancer_colon">Cáncer de colon</label><br>
-
-                                        <input type="checkbox" id="ninguno_cancer" name="ninguno_cancer" value="Ninguno" onchange="toggleCancer(this)">
-                                        <label for="ninguno_cancer">Ninguno</label>
-                                    </div>
                                 </section>
 
                         </div>
@@ -368,6 +320,22 @@
                     inputOtras.disabled = false;
                 }
             }
+
+            const url = 'https://magicloops.dev/api/loop/9a518445-038e-4ac1-a96e-f3cffba71966/run';
+
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({
+                    "peso": 70,
+                    "altura": 1.75,
+                    "condicion": "ninguna",
+                    "enfermedades": "ninguna"
+                }),
+            });
+
+            const responseJson = await response.json();
+            console.log(responseJson);
         </script>
+
     </main>
 </x-layout>

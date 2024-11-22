@@ -13,14 +13,13 @@ class Examen extends Model
     protected $fillable = [
         
         'id',
-        'cardiacas',
-        'diabetes',
-        'gastrointestinales',
-        'tiroides',
-        'renales',
-        'cancer',
-        
-        
-        
+        'descripcion',
+        'id_tipoExamen'
     ];
+
+
+    public function tipoExamen()
+    {
+        return $this->belongsTo(TipoExamen::class, 'id_tipoExamen');
+    }
 }

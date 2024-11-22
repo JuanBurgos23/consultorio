@@ -12,6 +12,7 @@ class EjercicioController extends Controller
 {
     public function index()
     {
+        $tipoEjercicio = TipoEjercicio::all();
         // Obtener todos los días
         $diasE = Dia::all();
 
@@ -19,7 +20,7 @@ class EjercicioController extends Controller
         $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias'])->get();
 
         // Pasar datos a la vista
-        return view('ejercicio.ejercicio', compact('ejercicios', 'diasE'));
+        return view('ejercicio.ejercicio', compact('ejercicios', 'diasE','tipoEjercicio'));
     }
 
 
@@ -38,10 +39,8 @@ class EjercicioController extends Controller
 
         ]);
 
-        // Crear el tipo de ejercicio
-        $tipoEjercicio = new TipoEjercicio();
-        $tipoEjercicio->nombre = $validatedData['nombreTipoEjercicio'];
-        $tipoEjercicio->save();
+       // Buscar o crear el tipo de alimento
+       $tipoEjercicio = TipoEjercicio::firstOrCreate(['nombre' => $validatedData['nombreTipoEjercicio']]);
 
         // Obtener los IDs de los días seleccionados
         $diasSeleccionados = $request->input('dias'); // Array de IDs de días

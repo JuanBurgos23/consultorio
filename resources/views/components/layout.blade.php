@@ -24,7 +24,12 @@
     <link rel="stylesheet" type="text/css" href="{{asset('src/plugins/datatables/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/styles/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('src/plugins/jquery-steps/jquery.steps.css')}}">
-    
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 
 
@@ -52,7 +57,7 @@
 </head>
 
 <body class="{{ $bodyClass }}">
-  <!--  <div class="pre-loader">
+    <!--  <div class="pre-loader">
         <div class="pre-loader-box">
             <div class="loader-logo"><img src="vendors/images/deskapp-logo.svg" alt=""></div>
             <div class='loader-progress' id="progress_div">
@@ -248,14 +253,14 @@
         </div>
     </div>
     <div class="left-side-bar">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <div class="brand-logo">
-            <a href="login.html" class="d-flex align-items-center">
-                <img src="vendors/images/favicon.png" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
-                <span style="font-size: 30px; font-weight: bold; color: white;">NUTRIA</span>
-            </a>
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="brand-logo">
+                <a href="login.html" class="d-flex align-items-center">
+                    <img src="vendors/images/favicon.png" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
+                    <span style="font-size: 30px; font-weight: bold; color: white;">NUTRIA</span>
+                </a>
+            </div>
         </div>
-    </div>
         <div class="menu-block customscroll">
             <div class="sidebar-menu">
                 <ul id="accordion-menu">

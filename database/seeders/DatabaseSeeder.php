@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         // Registra el seeder de días
         $this->call(DiaSeeder::class);
+        $this->call(TipoExam::class);
     }
 }

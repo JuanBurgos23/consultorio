@@ -3,6 +3,9 @@
     <head>
     </head>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <div class="container-fluid py-4">
             <div class="col-12">
                 <div class="card my-4">
@@ -22,9 +25,41 @@
                                 <form method="POST" action="registrar-ejercicio" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
-                                        <label>Tipo Ejercicio</label>
-                                        <input name="nombreTipoEjercicio" class="form-control" type="text" required>
+                                        <label for="nombreTipoEjercicio">Tipo de ejercicio</label>
+                                        <select id="nombreTipoEjercicio" name="nombreTipoEjercicio" class="form-control select2">
+                                            <option value="">Seleccione un tipo de ejercicio</option>
+                                            @foreach ($tipoEjercicio as $tipo)
+                                            <option value="{{ $tipo->nombre }}">{{ $tipo->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#nombreTipoEjercicio').select2({
+                                                tags: true, // Habilitar escritura y creación de nuevos elementos
+                                                placeholder: 'Seleccione o escriba un tipo de ejercicio',
+                                                allowClear: true,
+                                                createTag: function(params) {
+                                                    let term = $.trim(params.term);
+                                                    if (term === '') {
+                                                        return null;
+                                                    }
+                                                    return {
+                                                        id: term,
+                                                        text: term,
+                                                        newOption: true // Marca la opción como nueva
+                                                    };
+                                                },
+                                                templateResult: function(data) {
+                                                    if (data.newOption) {
+                                                        return $('<span>Agregar: <strong>' + data.text + '</strong></span>');
+                                                    }
+                                                    return data.text;
+                                                }
+                                            });
+                                        });
+                                    </script>
+
 
                                     <div>
                                         <div id="contenedorAlimentos">
