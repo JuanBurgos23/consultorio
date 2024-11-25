@@ -23,12 +23,8 @@ class DietaController extends Controller
     public function store(Request $request)
     {
        
-
-        // Crear la dieta
-        $dieta = new Dieta();
-        $dieta->nombre = $request->nombreDieta;
-        $dieta->descripcion = $request->descripcionDieta;
-        $dieta->save();  // Guardamos la dieta para obtener su id
+        // Buscar o crear el tipo de alimento
+       $dieta = Dieta::firstOrCreate(['nombre' => $request->nombreDieta,'descripcion' =>$request->descripcionDieta]);
 
         // Procesar alimentos seleccionados
         $alimentosSeleccionados = explode(',', $request->alimentosSeleccionados);

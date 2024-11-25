@@ -28,4 +28,8 @@ class Ejercicio extends Model
     {
         return $this->belongsToMany(Dia::class, 'ejercicio_dia', 'id_ejercicio', 'id_dia');
     }
+    public function ejercicios()
+    {
+        return $this->belongsToMany(Ejercicio::class, 'plan_ejercicio', 'id_ejercicio', 'id_planNutricional');
+    }
 }

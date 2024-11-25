@@ -321,20 +321,7 @@
                 }
             }
 
-            const url = 'https://magicloops.dev/api/loop/9a518445-038e-4ac1-a96e-f3cffba71966/run';
-
-            const response = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify({
-                    "peso": 70,
-                    "altura": 1.75,
-                    "condicion": "ninguna",
-                    "enfermedades": "ninguna"
-                }),
-            });
-
-            const responseJson = await response.json();
-            console.log(responseJson);
+            
         </script>
 
     </main>

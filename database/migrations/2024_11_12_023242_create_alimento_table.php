@@ -14,13 +14,10 @@ return new class extends Migration
         Schema::create('alimento', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('caloria');
-            $table->string('carbohidrato');
-            $table->string('proteina');
-            $table->string('grasa');
-            $table->string('fibra');
-            $table->string('vitamina');
-            $table->string('potacio');
+            $table->string('caloria')->nullable();
+            $table->string('carbohidrato')->nullable();
+            $table->string('proteina')->nullable();
+            $table->string('grasa')->nullable();
             $table->string('nombreImagen')->nullable();
             $table->unsignedBigInteger('id_tipoAlimento');
             $table->foreign('id_tipoAlimento')->references('id')->on('tipo_alimento');

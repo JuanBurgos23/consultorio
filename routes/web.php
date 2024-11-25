@@ -8,8 +8,11 @@ use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EjercicioController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\PeriodoController;
+use App\Http\Controllers\PlanNutricionalController;
 use App\Models\Ejercicio;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckRole;
+use App\Models\PlanNutricional;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,32 +46,40 @@ Route::post('Registrar/Consulta', [ConsultaController::class, 'storeConsulta'])-
 Route::post('Registrar/Adicional', [ConsultaController::class, 'store'])->name('registrar_adicional');
 
 //diagnostico
-Route::post('/generar-diagnostico', [DiagnosticoController::class, 'store']);
+Route::get('/diagnostico/{id}', [DiagnosticoController::class, 'mostrarDiagnostico'])->name('diagnostico');
+//historial
+Route::get('/Historial', [DiagnosticoController::class, 'historial'])->name('historial');
+Route::get('/detalle/historial/{id}',[DiagnosticoController::class,'detalleHistorial'])->name('detalle_historial');
 
 //periodo
 Route::get('/Periodo', [PeriodoController::class, 'index'])->name('periodo');
 Route::post('/registrar/periodo', [PeriodoController::class, 'store'])->name('registrar_periodo');
 
 //Alimento
-Route::get('/Alimento', [AlimentoController::class, 'index'])->name('alimento');
-Route::post('registrar-alimento', [AlimentoController::class, 'store']);
-Route::get('/alimento/edit/{id}', [AlimentoController::class, 'edit']);
-Route::put('/alimento-update/{id}', [AlimentoController::class, 'update']);
-Route::delete('/alimento/delete-image/{id}', [AlimentoController::class, 'deleteImage']);
+Route::get('/Alimento', [AlimentoController::class, 'index'])->name('alimento')->middleware('checkRole:admin');
+Route::post('registrar-alimento', [AlimentoController::class, 'store'])->middleware('checkRole:admin');
+Route::get('/alimento/edit/{id}', [AlimentoController::class, 'edit'])->middleware('checkRole:admin');
+Route::put('/alimento-update/{id}', [AlimentoController::class, 'update'])->middleware('checkRole:admin');
+Route::delete('/alimento/delete-image/{id}', [AlimentoController::class, 'deleteImage'])->middleware('checkRoke:admin');
 
 
 //Dieta
-Route::get('/Dieta', [DietaController::class, 'index'])->name('dieta');
-Route::post('registrar-dieta', [DietaController::class, 'store']);
+Route::get('/Dieta', [DietaController::class, 'index'])->name('dieta')->middleware('checkRole:admin');
+Route::post('registrar-dieta', [DietaController::class, 'store'])->middleware('checkRole:admin');
 
-Route::get('/periodos', [PeriodoController::class, 'obtenerPeriodos']);
-Route::get('/dias/{idPeriodo}', [PeriodoController::class, 'obtenerDias']);
-Route::get('/horas/{idDia}', [PeriodoController::class, 'obtenerHoras']);
+Route::get('/periodos', [PeriodoController::class, 'obtenerPeriodos'])->middleware('checkRole:admin');
+Route::get('/dias/{idPeriodo}', [PeriodoController::class, 'obtenerDias'])->middleware('checkRole:admin');
+Route::get('/horas/{idDia}', [PeriodoController::class, 'obtenerHoras'])->middleware('checkRole:admin');
 
 //Ejercicio
-Route::get('/Ejercicio', [EjercicioController::class, 'index'])->name('ejercicio');
-Route::post('registrar-ejercicio', [EjercicioController::class, 'store']);
+Route::get('/Ejercicio', [EjercicioController::class, 'index'])->name('ejercicio')->middleware('checkRole:admin');
+Route::post('registrar-ejercicio', [EjercicioController::class, 'store'])->middleware('checkRole:admin');
 
 
 //API
 Route::get('/llamar-api', [ConsultaController::class, 'ejecutarApi']);
+
+//plan nutricional
+Route::get('/plan/{id}', [PlanNutricionalController::class, 'index'])->name('plan_nutricional');
+Route::post('crear/plan', [PlanNutricionalController::class, 'store'])->name('plan');
+Route::get('/plan/historial/{id}', [PlanNutricionalController::class, 'planHistorial'])->name('plan_nutriHistorial');

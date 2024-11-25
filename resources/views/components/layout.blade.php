@@ -152,7 +152,7 @@
                 <div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                         <span class="user-icon">
-                            <img src="vendors/images/photo1.jpg" alt="">
+                            <img src="{{asset('vendors/images/photo1.jpg')}}" alt="">
                         </span>
                         <span class="user-name">{{auth::user()->name}}</span>
                     </a>
@@ -256,7 +256,7 @@
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="brand-logo">
                 <a href="login.html" class="d-flex align-items-center">
-                    <img src="vendors/images/favicon.png" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
+                    <img src="{{asset('vendors/images/favicon.png')}}" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
                     <span style="font-size: 30px; font-weight: bold; color: white;">NUTRIA</span>
                 </a>
             </div>
@@ -272,25 +272,34 @@
                     </li>
 
 
-
+                    @role('admin')
                     <li class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle">
-                            <span class="micon dw dw-edit2"></span><span class="mtext">Forms</span>
+                            <span class="micon dw dw-edit2"></span><span class="mtext">Registros</span>
                         </a>
                         <ul class="submenu">
-                            <li><a href="form-basic.html">Form Basic</a></li>
-                            <li><a href="advanced-components.html">Advanced Components</a></li>
-                            <li><a href="form-wizard.html">Form Wizard</a></li>
-                            <li><a href="html5-editor.html">HTML5 Editor</a></li>
-                            <li><a href="form-pickers.html">Form Pickers</a></li>
-                            <li><a href="image-cropper.html">Image Cropper</a></li>
-                            <li><a href="image-dropzone.html">Image Dropzone</a></li>
+                            <li>
+                                <a href="{{ route('periodo') }}" class="dropdown-toggle no-arrow {{ Route::is('periodo') ? 'active' : '' }}">
+                                    <span class="micon dw dw-notepad-2"></span><span class="mtext">Periodo</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('alimento') }}" class="dropdown-toggle no-arrow {{ Route::is('alimento') ? 'active' : '' }}">
+                                    <span class="micon dw dw-notepad-2"></span><span class="mtext">Alimento</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('dieta') }}" class="dropdown-toggle no-arrow {{ Route::is('dieta') ? 'active' : '' }}">
+                                    <span class="micon dw dw-notepad-2"></span><span class="mtext">Dieta</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('ejercicio') }}" class="dropdown-toggle no-arrow {{ Route::is('ejercicio') ? 'active' : '' }}">
+                                    <span class="micon dw dw-notepad-2"></span><span class="mtext">Ejercicio</span>
+                                </a>
+                            </li>
                         </ul>
-                    </li>
-                    <li>
-                        <a href="{{ route('registro') }}" class="dropdown-toggle no-arrow {{ Route::is('registro') ? 'active' : '' }}">
-                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Registrar Consulta</span>
-                        </a>
                     </li>
 
                     <li>
@@ -298,28 +307,20 @@
                             <span class="micon dw dw-notepad-2"></span><span class="mtext">Consultas</span>
                         </a>
                     </li>
-
+                    @endrole
+                    @role('paciente')
                     <li>
-                        <a href="{{ route('periodo') }}" class="dropdown-toggle no-arrow {{ Route::is('periodo') ? 'active' : '' }}">
-                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Periodo</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('alimento') }}" class="dropdown-toggle no-arrow {{ Route::is('alimento') ? 'active' : '' }}">
-                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Alimento</span>
+                        <a href="{{ route('registro') }}" class="dropdown-toggle no-arrow {{ Route::is('registro') ? 'active' : '' }}">
+                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Registrar Consulta</span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="{{ route('dieta') }}" class="dropdown-toggle no-arrow {{ Route::is('dieta') ? 'active' : '' }}">
-                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Dieta</span>
+                        <a href="{{ route('historial') }}" class="dropdown-toggle no-arrow {{ Route::is('historial') || Route::is('detalle_historial')  ? 'active' : '' }}">
+                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Historial</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('ejercicio') }}" class="dropdown-toggle no-arrow {{ Route::is('ejercicio') ? 'active' : '' }}">
-                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Ejercicio</span>
-                        </a>
-                    </li>
+                    @endrole
                     <li>
                         <div class="dropdown-divider"></div>
                     </li>

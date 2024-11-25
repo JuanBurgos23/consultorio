@@ -60,7 +60,7 @@ class RegisterController extends Controller
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[@$!%*?&#]/',
+                'regex:/[@$!%*?&#-_]/',
             ],
         ], [
             'password.regex' => 'La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un símbolo.',

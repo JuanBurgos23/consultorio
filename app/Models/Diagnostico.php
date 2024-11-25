@@ -20,7 +20,7 @@ class Diagnostico extends Model
         
         
     ];
-    public function consukta()
+    public function consulta()
     {
         return $this->belongsTo(Consulta::class, 'id_consulta');
     }

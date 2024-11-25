@@ -33,6 +33,9 @@ class PlanNutricional extends Model
     }
     public function ejercicios()
     {
-        return $this->belongsToMany(Ejercicio::class, 'plan_ejercicio', 'id_ejercicio', 'id_planNutricional');
+        return $this->belongsToMany(PlanNutricional::class, 'plan_ejercicio', 'id_planNutricional', 'id_ejercicio');
+    }
+    public function ejercicio(){
+        return $this->belongsTo(Ejercicio::class,'id_ejercicio');
     }
 }

@@ -1,8 +1,52 @@
 <x-layout bodyClass="g-sidenav-show bg-gray-200">
 
     <head>
+
+
     </head>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <style>
+            #alimentosSeleccionados {
+                display: flex;
+                flex-wrap: wrap;
+                /* Allow items to wrap to the next line */
+                padding: 0;
+                list-style: none;
+                margin: 0;
+                gap: 10px;
+                /* Space between items */
+                justify-content: space-between;
+                /* Distributes items evenly in a row */
+            }
+
+            #alimentosSeleccionados li {
+                flex: 0 0 calc(25% - 10px);
+                /* Each item takes 25% of the width minus the gap */
+                margin: 5px 0;
+                /* Vertical margin for rows */
+                box-sizing: border-box;
+                /* Include padding and border in width calculation */
+                text-align: center;
+                /* Center the content inside each item */
+                padding: 10px;
+                border: 1px solid #ccc;
+                /* Optional: Add border for better visual separation */
+                border-radius: 5px;
+                background-color: #f9f9f9;
+                /* Optional: Background color */
+            }
+
+            #alimentosSeleccionados img {
+                width: 80px;
+                /* Adjust image size */
+                height: 80px;
+                object-fit: cover;
+                /* Ensure images fit nicely */
+            }
+        </style>
         <div class="container-fluid py-4">
             <div class="col-12">
                 <div class="card my-4">
@@ -22,10 +66,40 @@
                                 <form method="POST" action="registrar-dieta" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
-                                        <label>Nombre Dieta</label>
-                                        <input name="nombreDieta" class="form-control" type="text" required>
-
+                                        <label for="nombreDieta">Nombre Dieta</label>
+                                        <select id="nombreDieta" name="nombreDieta" class="form-control select2">
+                                            <option value="">Seleccione una Dieta</option>
+                                            @foreach ($dietas as $dieta)
+                                            <option value="{{ $dieta->nombre }}">{{ $dieta->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#nombreDieta').select2({
+                                                tags: true, // Habilitar escritura y creación de nuevos elementos
+                                                placeholder: 'Seleccione o escriba una Dieta',
+                                                allowClear: true,
+                                                createTag: function(params) {
+                                                    let term = $.trim(params.term);
+                                                    if (term === '') {
+                                                        return null;
+                                                    }
+                                                    return {
+                                                        id: term,
+                                                        text: term,
+                                                        newOption: true // Marca la opción como nueva
+                                                    };
+                                                },
+                                                templateResult: function(data) {
+                                                    if (data.newOption) {
+                                                        return $('<span>Agregar: <strong>' + data.text + '</strong></span>');
+                                                    }
+                                                    return data.text;
+                                                }
+                                            });
+                                        });
+                                    </script>
                                     <!-- Selección de Alimentos -->
                                     <div class="form-group">
                                         <label>Seleccionar Alimento</label>
@@ -68,10 +142,17 @@
                                                         @foreach($alimentos as $alimento)
                                                         <div class="col-md-4 alimento-item" data-tipo="{{ $alimento->id_tipoAlimento }}">
                                                             <div class="card mb-4">
-                                                                <img src="{{ $alimento->imagen }}" class="card-img-top" alt="Imagen del alimento">
+                                                                <img src="{{ $alimento->nombreImagen }}" class="card-img-top" alt="Imagen del alimento">
                                                                 <div class="card-body">
                                                                     <h5 class="card-title">{{ $alimento->nombre }}</h5>
-                                                                    <button type="button" class="btn btn-success" onclick="seleccionarAlimento({{ $alimento->id }}, '{{ $alimento->nombre }}')">Seleccionar</button>
+                                                                    <button type="button" class="btn btn-success"
+                                                                        onclick="seleccionarAlimento(
+                                                                            {{ $alimento->id }}, 
+                                                                            '{{ $alimento->nombre }}', 
+                                                                            '{{ !empty($alimento->nombreImagen) ? asset($alimento->nombreImagen) : asset('path/to/default-image.jpg') }}'
+                                                                        )">
+                                                                        Seleccionar
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -99,31 +180,64 @@
                                         });
 
                                         // Seleccionar un alimento
-                                        window.seleccionarAlimento = function(id, nombre) {
+                                        window.seleccionarAlimento = function(id, nombre, imagenUrl) {
                                             // Generar un identificador único basado en el tiempo o un contador
                                             const uniqueId = `${id}_${Date.now()}`;
 
                                             // Crear el contenedor para el alimento seleccionado
                                             const li = document.createElement('li');
-                                            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                                            li.className = 'list-group-item';
                                             li.dataset.id = uniqueId;
 
                                             // Crear los select dinámicamente con IDs únicos
+                                            // Crear los elementos internos dinámicamente con IDs únicos
                                             li.innerHTML = `
-                                        ${nombre} 
-                                        <!--Select para el Periodo-->
-                                        <select class="form-control form-control-sm mt-2"id = "periodoSelect_${uniqueId}" name="periodos[]">
-                                         <option id="listaPeriodosSeleccionados" value = ""> Seleccione un Periodo </option> 
-                                         <!--Los periodos se cargarán dinámicamente aquí-->
-                                        </select> 
-                                        <select class="form-control form-control-sm mt-2" id = "diaSelect_${uniqueId}" disabled name="dias[]">
-                                         <option value=""> Seleccione un Día </option> 
-                                        </select> 
-                                        <select class="form-control form-control-sm mt-2" id = "horaSelect_${uniqueId}" disabled name="horas[]">
-                                         <option value=""> Seleccione una Hora </option> 
-                                        </select> 
-                                        <button type="button" class="btn btn-danger btn-sm ml-2" data- id="${uniqueId}"> Eliminar</button>
-                                        `;
+    <div class="d-flex align-items-center mb-3">
+        <img src="${imagenUrl}" alt="Imagen del alimento" class="img-thumbnail mr-3" style="width: 100px; height: 75px; object-fit: cover;">
+        <div class="ml-3"> <!-- Contenedor para el texto del alimento -->
+            <strong>${nombre}</strong>
+        </div>
+    </div>
+    <!-- Contenedor separado para los selects -->
+    <div class="form-section">
+        <select class="form-control form-control-sm mb-2" id="periodoSelect_${uniqueId}" name="periodos[]">
+            <option value="">Seleccione un Periodo</option> 
+        </select> 
+        <select class="form-control form-control-sm mb-2" id="diaSelect_${uniqueId}" disabled name="dias[]">
+            <option value="">Seleccione un Día</option> 
+        </select> 
+        <select class="form-control form-control-sm mb-2" id="horaSelect_${uniqueId}" disabled name="horas[]">
+            <option value="">Seleccione una Hora</option> 
+        </select> 
+    </div>
+    <button type="button" class="btn btn-danger btn-sm mt-2" data-id="${uniqueId}">Eliminar</button>
+`;
+
+                                            // Aplicar estilos globales con CSS
+                                            const style = document.createElement('style');
+                                            style.textContent = `
+    .list-group-item {
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+    .form-section {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+    .d-flex.align-items-center {
+        display: flex;
+        align-items: center;
+    }
+    .img-thumbnail {
+        flex-shrink: 0;
+    }
+    .form-control {
+        width: 100%;  /* Garantiza que los selects ocupen todo el ancho disponible */
+    }
+    
+`;
+                                            document.head.appendChild(style);
 
                                             // Añadir el alimento a la lista
                                             listaAlimentosSeleccionados.appendChild(li);
@@ -253,8 +367,41 @@
                                     </script>
                             </div>
                             <div class="col-md-4 col-sm-12 text-center">
-                                <label>Descripcion Dieta</label>
-                                <input name="descripcionDieta" class="form-control" type="text" required>
+                                <div class="form-group">
+                                    <label for="descripcionDieta">Descripcion</label>
+                                    <select id="descripcionDieta" name="descripcionDieta" class="form-control select2" required>
+                                        <option value="">Seleccione una Dieta</option>
+                                        @foreach ($dietas as $dieta)
+                                        <option value="{{ $dieta->descripcion }}">{{ $dieta->descripcion }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#descripcionDieta').select2({
+                                            tags: true, // Habilitar escritura y creación de nuevos elementos
+                                            placeholder: 'Seleccione o escriba una Descrcipcion',
+                                            allowClear: true,
+                                            createTag: function(params) {
+                                                let term = $.trim(params.term);
+                                                if (term === '') {
+                                                    return null;
+                                                }
+                                                return {
+                                                    id: term,
+                                                    text: term,
+                                                    newOption: true // Marca la opción como nueva
+                                                };
+                                            },
+                                            templateResult: function(data) {
+                                                if (data.newOption) {
+                                                    return $('<span>Agregar: <strong>' + data.text + '</strong></span>');
+                                                }
+                                                return data.text;
+                                            }
+                                        });
+                                    });
+                                </script>
 
                             </div>
 

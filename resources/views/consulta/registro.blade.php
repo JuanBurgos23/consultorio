@@ -35,9 +35,9 @@
                           <div class="col-sm-12 col-md-10">
                          <select class="form-control" name="objetivo" required>
                          <option value="" disabled selected>Selecciona un objetivo</option>
-                               <option value="subir">Subir de peso</option>
-                          <option value="bajar">Bajar de peso</option>
-                          <option value="mantener">Mantener el peso</option>
+                               <option value="subir de peso">Subir de peso</option>
+                          <option value="bajar de peso">Bajar de peso</option>
+                          <option value="mantener el peso">Mantener el peso</option>
                        </select>
                          </div>
                      </div>

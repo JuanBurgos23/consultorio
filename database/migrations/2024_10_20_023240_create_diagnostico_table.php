@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('diagnostico', function (Blueprint $table) {
             $table->id();
-            $table->string('detalle')->nullable();
+            $table->longText('detalle')->nullable();
+            $table->longText('recomendacion')->nullable();
             $table->unsignedBigInteger('id_consulta')->nullable();
             $table->foreign('id_consulta')->references('id')->on('consulta');
             $table->timestamps();

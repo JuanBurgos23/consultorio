@@ -2,48 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Consulta;
 use App\Models\Diagnostico;
+use App\Models\Paciente;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class DiagnosticoController extends Controller
 {
-    public function getDiagnosis($data)
+    public function mostrarDiagnostico($id)
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-        ])->post('https://api.openai.com/v1/completions', [
-            'model' => 'text-davinci-003',  // o el modelo de tu preferencia
-            'prompt' => "Diagnostica a un paciente con motivo: {$data['motivo']}, objetivo: {$data['objetivo']}, peso: {$data['peso']}, altura: {$data['altura']}, alergias: {$data['alergia']}, discapacidades: {$data['discapacidad']}, exámenes: {$data['nombre_examen']}.",
-            'max_tokens' => 100,
-        ]);
 
-        return $response->json();
+        // Buscar el diagnóstico con la relación de consulta
+        $diagnostico = Diagnostico::findOrFail($id);
+
+
+        return view('diagnostico.diagnostico', compact('diagnostico'));
     }
 
-    public function store(Request $request)
+    public function historial()
     {
-        // Recopilar datos del paciente desde la solicitud
-        $data = [
-            'motivo' => $request->motivo,
-            'objetivo' => $request->objetivo,
-            'peso' => $request->peso,
-            'altura' => $request->altura,
-            'alergia' => $request->alergia,
-            'discapacidad' => $request->discapacidad,
-            'nombre_examen' => $request->nombre_examen,
-        ];
+        // Obtener el usuario autenticado
+        $user = auth()->user();
 
-        // Obtener diagnóstico de OpenAI
-        $diagnostico = $this->getDiagnosis($data);
+        // Verificar si el usuario tiene un paciente asociado
+        $paciente = $user->paciente;
 
-        // Guardar el diagnóstico en la base de datos
-        // Aquí suponemos que tienes un modelo llamado `Diagnostico`
-        Diagnostico::create([
-            'detalle' => $diagnostico['choices'][0]['text'] ?? 'Diagnóstico no disponible',
-            'consulta_id' => $request->consulta_id,  // ID de la consulta, si aplica
-        ]);
+        if (!$paciente) {
+            return redirect()->back()->with('error', 'No se encontró un paciente asociado.');
+        }
 
-        return redirect()->route('mostrar_consulta')->with('success', 'Diagnóstico generado y guardado correctamente.');
+        // Obtener los diagnósticos del paciente con la relación de consulta y otras relaciones necesarias
+        $diagnosticos = Diagnostico::with(['consulta.imc', 'consulta.condicion', 'consulta.examen'])
+            ->whereHas('consulta', function ($query) use ($paciente) {
+                $query->where('id_paciente', $paciente->id_paciente);
+            })
+            ->get();
+
+        // Pasar los diagnósticos a la vista
+        return view('diagnostico.historial', compact('diagnosticos'));
+    }
+    public function detalleHistorial($id)
+    {
+
+
+        // Obtener los diagnósticos del paciente con la relación de consulta y otras relaciones necesarias
+        $diagnosticos = Diagnostico::with(['consulta.imc', 'consulta.condicion', 'consulta.examen'])->findOrFail($id);
+
+
+        // Pasar los diagnósticos a la vista
+        return view('diagnostico.detalle_historial', compact('diagnosticos'));
     }
 }

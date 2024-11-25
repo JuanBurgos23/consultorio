@@ -34,7 +34,6 @@ class ConsultaController extends Controller
     }
 
 
-
     public function storeConsulta(Request $request)
     {
         // Crear la consulta
@@ -48,34 +47,7 @@ class ConsultaController extends Controller
         return redirect()->route('consulta', ['consulta_id' => $consulta->id])
             ->with('success', 'Consulta registrada. Ahora ingresa los datos adicionales.');
     }
-    public function ejecutarApi(Request $request)
-    {
-        // URL de la API externa
-        $url = 'https://magicloops.dev/api/loop/9a518445-038e-4ac1-a96e-f3cffba71966/run';
 
-        // Datos a enviar en la solicitud
-        $data = [
-            "peso" => $request,
-            "altura" => 1.75,
-            "condicion" => "ninguna",
-            "enfermedades" => "ninguna"
-        ];
-
-        // Realiza la solicitud POST
-        $response = Http::post($url, $data);
-
-        // Comprueba si la solicitud fue exitosa
-        if ($response->successful()) {
-            // Obtiene la respuesta en formato JSON
-            $responseData = $response->json();
-
-            // Devuelve la respuesta o procesa según necesidad
-            return response()->json($responseData);
-        } else {
-            // Maneja el error
-            return response()->json(['error' => 'Error al conectar con la API externa'], $response->status());
-        }
-    }
 
     public function store(Request $request)
     {
@@ -126,34 +98,45 @@ class ConsultaController extends Controller
         $datosAPI = [
             "peso" => $imc->peso,
             "altura" => $imc->altura,
+            "objetivo" => $consulta->objetivo,
+            "motivo" => $consulta->motivo,
             "condicion" => $condicion->operaciones ?: 'ninguna',
+            "alergia" => $condicion->alergia ?: 'ninguna',
+            "discapacidad" => $condicion->discapacidad ?: 'ninguna',
             "enfermedades" => $examen->descripcion ?: 'ninguna',
         ];
 
         try {
             // Enviar datos a la API externa
-            $response = Http::post('https://magicloops.dev/api/loop/9a518445-038e-4ac1-a96e-f3cffba71966/run', $datosAPI);
+            $response = Http::post('https://magicloops.dev/api/loop/d269036f-1fb6-4544-b8d7-36c95f6a9d1d/run', $datosAPI);
 
             if ($response->successful()) {
                 // Capturar el resultado de la API
                 $resultado = $response->json();
-            
-                // Asegúrate de que $resultado contenga el texto que quieres guardar
-                // Por ejemplo, si el campo que contiene el diagnóstico es 'diagnosis', puedes hacer:
-                $detalleDiagnostico = $resultado ?? 'Diagnóstico no especificado';
-            
+
+                // Asegúrate de que $resultado contenga el texto completo que quieres guardar
+                $detalleDiagnostico = $resultado ?? 'Diagnóstico no especificado'; // Ajusta la clave según el campo devuelto
+
+                // Extraer la sección de recomendaciones usando una expresión regular
+                preg_match('/#### Recomendaciones(.*)/s', $detalleDiagnostico, $coincidencias);
+
+                // Guardar las recomendaciones y el resto del texto por separado
+                $recomendacion = $coincidencias[1] ?? ''; // Captura la sección de recomendaciones
+                $detalle = preg_replace('/#### Recomendaciones.*/s', '', $detalleDiagnostico); // Elimina la sección de recomendaciones
+
                 // Crear el registro en la tabla diagnostico
                 $diagnostico = new Diagnostico();
-                $diagnostico->detalle = $detalleDiagnostico; // Guardar el texto directamente
+                $diagnostico->detalle = trim($detalle); // Guarda la parte del detalle
+                $diagnostico->recomendacion = trim($recomendacion); // Guarda la parte de las recomendaciones
                 $diagnostico->id_consulta = $consulta->id; // Relacionar el diagnóstico con la consulta
                 $diagnostico->save();
-            
+
                 // Redirigir a la vista de consulta con éxito
-                return redirect()->route('mostrar_consulta')->with('success', 'Datos registrados correctamente y diagnóstico guardado.');
+                return redirect()->route('diagnostico', ['id' => $diagnostico->id])
+                    ->with('success', 'Consulta y diagnóstico registrados correctamente.');
             } else {
                 return redirect()->back()->with('error', 'Error en la API externa: ' . $response->body());
             }
-            
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error al conectar con la API: ' . $e->getMessage());
         }
