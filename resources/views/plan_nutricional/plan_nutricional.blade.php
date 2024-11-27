@@ -120,15 +120,14 @@
                 </div>
                 <!-- Pie de página con botón de impresión -->
                 <div class="card-footer text-center bg-light">
-                    <button onclick="window.print()" class="btn btn-outline-primary">
-                        Imprimir plan
-                    </button>
+                    <a href="{{ route('plan_pdf', $planNutricional->id) }}" class="btn btn-success">Generar PDF</a>
                 </div>
                 <div class="card-footer text-center bg-light">
-                    <button onclick="window.print()" class="btn btn-outline-primary">
+                    <button onclick="" class="btn btn-outline-primary">
                         volver
                     </button>
                 </div>
+                
             </div>
         </div>
         </div>

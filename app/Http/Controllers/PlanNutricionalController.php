@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PlanNutricionalMail;
 use App\Models\Alimento;
 use App\Models\DetalleDieta;
 use App\Models\Dia;
@@ -19,6 +20,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\Mail;
 
 class PlanNutricionalController extends Controller
 {
@@ -31,14 +36,14 @@ class PlanNutricionalController extends Controller
             'dieta.detalleDietas2.horario',   // Cargamos los horarios
             'dieta.detalleDietas2.periodo',   // Cargamos los periodos
             'dieta.detalleDietas2.dia',       // Cargamos los días
-            
+
         ])->findOrFail($id);
 
         // Obtén todos los ejercicios con sus relaciones (tipo de ejercicio y días)
-        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias','ejercicios'])->get();
+        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias', 'ejercicios'])->get();
 
         //dd($ejercicios);
-        return view('plan_nutricional.plan_nutricional', compact('planNutricional','ejercicios'));
+        return view('plan_nutricional.plan_nutricional', compact('planNutricional', 'ejercicios'));
     }
     public function planHistorial($id)
     {
@@ -48,14 +53,68 @@ class PlanNutricionalController extends Controller
             'dieta.detalleDietas2.horario',   // Cargamos los horarios
             'dieta.detalleDietas2.periodo',   // Cargamos los periodos
             'dieta.detalleDietas2.dia',       // Cargamos los días
-            
+
         ])->findOrFail($id);
 
         // Obtén todos los ejercicios con sus relaciones (tipo de ejercicio y días)
-        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias','ejercicios'])->get();
 
+        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias', 'ejercicios'])->findOrFail($id,'id_planNutricional');
         //dd($ejercicios);
         return view('plan_nutricional.plan_nutricional', compact('planNutricional','ejercicios'));
+    }
+    public function generarPDF($id)
+    {
+        $planNutricional = PlanNutricional::with([
+            'dieta.detalleDietas2.alimento',
+            'dieta.detalleDietas2.horario',
+            'dieta.detalleDietas2.periodo',
+            'dieta.detalleDietas2.dia',
+        ])->findOrFail($id);
+
+        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias'])->get();
+
+        $html = view('plan_nutricional.plan_pdf', compact('planNutricional', 'ejercicios'))->render();
+        // Configurar Dompdf
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+
+        // Renderizar el PDF
+        $dompdf->render();
+
+        // Obtener el contenido del PDF como una cadena
+        $output = $dompdf->output();
+
+        // Send the email with the PDF attached
+
+
+        return response()->view('plan_nutricional.plan_pdf', compact('planNutricional', 'ejercicios', 'output'));
+    }
+    public function enviarPlanPorCorreo($id)
+    {
+        // Retrieve the plan and its data
+        $planNutricional = PlanNutricional::with([
+            'dieta.detalleDietas2.alimento',
+            'dieta.detalleDietas2.horario',
+            'dieta.detalleDietas2.periodo',
+            'dieta.detalleDietas2.dia',
+        ])->findOrFail($id);
+        // Obtener el usuario autenticado
+        $user = auth()->user();
+
+        // Verificar si el usuario tiene un paciente asociado
+        $paciente = $user->email;
+        // Generate the PDF
+        $pdf = PDF::loadView('emails.plan_nutricional', compact('planNutricional'))->output();
+
+        // Send the email with the PDF attached
+        Mail::to($paciente) // Replace with dynamic user email if needed
+            ->send(new PlanNutricionalMail($planNutricional, $pdf));
+
+        return back()->with('success', 'Plan nutricional enviado con éxito.');
     }
     public function store(Request $request)
     {

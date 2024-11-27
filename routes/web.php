@@ -83,3 +83,8 @@ Route::get('/llamar-api', [ConsultaController::class, 'ejecutarApi']);
 Route::get('/plan/{id}', [PlanNutricionalController::class, 'index'])->name('plan_nutricional');
 Route::post('crear/plan', [PlanNutricionalController::class, 'store'])->name('plan');
 Route::get('/plan/historial/{id}', [PlanNutricionalController::class, 'planHistorial'])->name('plan_nutriHistorial');
+Route::get('/plan-nutricional/{id}/pdf', [PlanNutricionalController::class, 'generarPDF'])->name('plan_pdf');
+//enviar correo planNutricional
+
+Route::post('/plan/enviar-correo/{id}', [PlanNutricionalController::class, 'enviarPlanPorCorreo'])->name('enviarPlanCorreo');
+
