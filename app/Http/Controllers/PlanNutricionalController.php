@@ -58,7 +58,7 @@ class PlanNutricionalController extends Controller
 
         // Obtén todos los ejercicios con sus relaciones (tipo de ejercicio y días)
 
-        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias', 'ejercicios'])->findOrFail($id,'id_planNutricional');
+        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias','ejercicios'])->get();
         //dd($ejercicios);
         return view('plan_nutricional.plan_nutricional', compact('planNutricional','ejercicios'));
     }

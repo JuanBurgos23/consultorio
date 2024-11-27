@@ -6,7 +6,7 @@ use App\Models\Condicion;
 use App\Models\Consulta;
 use App\Models\Diagnostico;
 use App\Models\Examen;
-use App\Models\IMC;
+use App\Models\Imc;
 use App\Models\Paciente;
 use App\Models\TipoExamen;
 use Database\Seeders\TipoExam;
@@ -65,7 +65,7 @@ class ConsultaController extends Controller
         }
 
         // Crear registros de IMC, Condición y Examen
-        $imc = new IMC();
+        $imc = new Imc();
         $imc->peso = $request->peso;
         $imc->altura = $request->altura;
         $imc->save();

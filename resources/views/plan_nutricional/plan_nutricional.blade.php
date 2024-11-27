@@ -123,9 +123,9 @@
                     <a href="{{ route('plan_pdf', $planNutricional->id) }}" class="btn btn-success">Generar PDF</a>
                 </div>
                 <div class="card-footer text-center bg-light">
-                    <button onclick="" class="btn btn-outline-primary">
-                        volver
-                    </button>
+                    
+                        <a href="{{ route('historial')}}"class="btn btn-success">Volver al Historial</a>
+                    
                 </div>
                 
             </div>
