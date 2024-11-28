@@ -3,12 +3,14 @@
 use App\Http\Controllers\AlimentoController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ConsultaController;
+use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DiagnosticoController;
 use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EjercicioController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\PlanNutricionalController;
+use App\Http\Controllers\ReportarController;
 use App\Models\Ejercicio;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRole;
@@ -87,4 +89,10 @@ Route::get('/plan-nutricional/{id}/pdf', [PlanNutricionalController::class, 'gen
 //enviar correo planNutricional
 
 Route::post('/plan/enviar-correo/{id}', [PlanNutricionalController::class, 'enviarPlanPorCorreo'])->name('enviarPlanCorreo');
+
+
+//enviar reporte
+Route::get('/Reportar', [ContactoController::class, 'index'])->name('reportar');
+;
+ Route::post('/Reportar', [ContactoController::class, 'store'])->name('contactoStore');
 

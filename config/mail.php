@@ -44,6 +44,17 @@ return [
             'timeout' => null,
             'verify_peer' => false,
         ],
+        'smtp_local' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'sandbox.smtp.mailtrap.io'),
+            'port' => env('MAIL_PORT', 2525), // Cambiar a 2525
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'), // Asegúrate de usar 'tls'
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
+            'timeout' => null,
+            'verify_peer' => false,
+        ],
+
 
         'ses' => [
             'transport' => 'ses',

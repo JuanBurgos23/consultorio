@@ -310,7 +310,7 @@
                     @endrole
                     @role('paciente')
                     <li>
-                        <a href="{{ route('registro') }}" class="dropdown-toggle no-arrow {{ Route::is('registro') ? 'active' : '' }}">
+                        <a href="{{ route('registro') }}" class="dropdown-toggle no-arrow {{ Route::is('registro') || Route::is('plan_nutricional') ? 'active' : '' }}">
                             <span class="micon dw dw-notepad-2"></span><span class="mtext">Registrar Consulta</span>
                         </a>
                     </li>
@@ -318,6 +318,11 @@
                     <li>
                         <a href="{{ route('historial') }}" class="dropdown-toggle no-arrow {{ Route::is('historial') || Route::is('detalle_historial')  ? 'active' : '' }}">
                             <span class="micon dw dw-notepad-2"></span><span class="mtext">Historial</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('reportar') }}" class="dropdown-toggle no-arrow {{ Route::is('reportar')  ? 'active' : '' }}">
+                            <span class="micon dw dw-notepad-2"></span><span class="mtext">Reportar</span>
                         </a>
                     </li>
                     @endrole

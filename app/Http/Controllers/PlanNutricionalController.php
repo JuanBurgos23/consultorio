@@ -52,15 +52,18 @@ class PlanNutricionalController extends Controller
             'dieta.detalleDietas2.alimento',  // Cargamos los alimentos relacionados
             'dieta.detalleDietas2.horario',   // Cargamos los horarios
             'dieta.detalleDietas2.periodo',   // Cargamos los periodos
-            'dieta.detalleDietas2.dia',       // Cargamos los días
+            'dieta.detalleDietas2.dia', // Cargamos los días
+            'ejercicios.tipoEjercicio'
 
         ])->findOrFail($id);
 
         // Obtén todos los ejercicios con sus relaciones (tipo de ejercicio y días)
 
-        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias', 'ejercicios'])->findOrFail($id,'id_planNutricional');
-        //dd($ejercicios);
-        return view('plan_nutricional.plan_nutricional', compact('planNutricional','ejercicios'));
+        $ejercicios = Ejercicio::with(['ejercicios', 'tipoEjercicio', 'dias'])->findOrFail($id);
+
+
+        //dd($planNutricional);
+        return view('plan_nutricional.plan_nutricional', compact('planNutricional'));
     }
     public function generarPDF($id)
     {
@@ -69,15 +72,17 @@ class PlanNutricionalController extends Controller
             'dieta.detalleDietas2.horario',
             'dieta.detalleDietas2.periodo',
             'dieta.detalleDietas2.dia',
+            'ejercicios.tipoEjercicio',
+            'ejercicios.dias'
         ])->findOrFail($id);
 
-        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias'])->get();
+        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias', 'ejercicios'])->get();
 
-        $html = view('plan_nutricional.plan_pdf', compact('planNutricional', 'ejercicios'))->render();
+        $html = view('plan_nutricional.plan_pdf', compact('planNutricional'))->render();
         // Configurar Dompdf
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
-        $options->set('isPhpEnabled', true);
+
 
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html);
@@ -95,27 +100,32 @@ class PlanNutricionalController extends Controller
     }
     public function enviarPlanPorCorreo($id)
     {
-        // Retrieve the plan and its data
         $planNutricional = PlanNutricional::with([
             'dieta.detalleDietas2.alimento',
             'dieta.detalleDietas2.horario',
             'dieta.detalleDietas2.periodo',
             'dieta.detalleDietas2.dia',
+            'ejercicios.tipoEjercicio',
+            'ejercicios.dias'
         ])->findOrFail($id);
-        // Obtener el usuario autenticado
+
+        // Generar el PDF con estilos y opciones adecuadas
+        $pdf = PDF::loadView('plan_nutricional.plan_pdf', compact('planNutricional'))
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isPhpEnabled', true)
+            ->setOption('isCssFloatEnabled', true)
+            ->setOption('css', public_path('styles/all.min.css'));
+
+        // Obtener el contenido como un string binario
+        $pdfContent = $pdf->output();
+
+        // Enviar el correo con el PDF adjunto
         $user = auth()->user();
-
-        // Verificar si el usuario tiene un paciente asociado
-        $paciente = $user->email;
-        // Generate the PDF
-        $pdf = PDF::loadView('emails.plan_nutricional', compact('planNutricional'))->output();
-
-        // Send the email with the PDF attached
-        Mail::to($paciente) // Replace with dynamic user email if needed
-            ->send(new PlanNutricionalMail($planNutricional, $pdf));
+        Mail::to($user->email)->send(new PlanNutricionalMail($planNutricional, $pdfContent));
 
         return back()->with('success', 'Plan nutricional enviado con éxito.');
     }
+
     public function store(Request $request)
     {
 

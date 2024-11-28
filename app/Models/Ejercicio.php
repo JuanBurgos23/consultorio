@@ -13,7 +13,6 @@ class Ejercicio extends Model
         'nombre',
         'descripcion',
         'id_tipoEjercicio',
-        'id_rutina',
         'series',
         'repeticiones',
         'descanso',
@@ -30,6 +29,6 @@ class Ejercicio extends Model
     }
     public function ejercicios()
     {
-        return $this->belongsToMany(Ejercicio::class, 'plan_ejercicio', 'id_ejercicio', 'id_planNutricional');
+        return $this->belongsToMany(Ejercicio::class, 'plan_ejercicio', 'id_planNutricional', 'id_ejercicio');
     }
 }

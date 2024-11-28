@@ -9,15 +9,15 @@ class PlanNutricional extends Model
 {
     use HasFactory;
     protected $table = 'plan_nutricional';
-    
+
     protected $fillable = [
-        
+        'id',
         'descripcion',
         'estado',
         'id_periodo',
         'id_dieta',
         'id_diagnostico',
-        
+
     ];
     public function periodo()
     {
@@ -33,9 +33,6 @@ class PlanNutricional extends Model
     }
     public function ejercicios()
     {
-        return $this->belongsToMany(PlanNutricional::class, 'plan_ejercicio', 'id_planNutricional', 'id_ejercicio');
-    }
-    public function ejercicio(){
-        return $this->belongsTo(Ejercicio::class,'id_ejercicio');
+        return $this->belongsToMany(Ejercicio::class, 'plan_ejercicio', 'id_planNutricional', 'id_ejercicio');
     }
 }

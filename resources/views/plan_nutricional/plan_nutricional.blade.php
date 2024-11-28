@@ -92,7 +92,6 @@
                             mealSelect.addEventListener('change', showMealContent);
                         });
                     </script>
-
                     <!-- Ejercicios asociados al Plan Nutricional -->
                     <h2>Ejercicios del Plan Nutricional</h2>
                     <table class="table table-bordered">
@@ -106,15 +105,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($ejercicios as $ejercicio)
+                            @if($planNutricional->ejercicios->isNotEmpty())
+                            @foreach($planNutricional->ejercicios as $ejercicio)
                             <tr>
-                                <td>{{ $ejercicio->nombre  ?? 'No disponible' }}</td>
-                                <td>{{ $ejercicio->tipoEjercicio->nombre ?? 'No disponible' }}</td>
-                                <td>{{ $ejercicio->series ?? 'No disponible' }}</td>
-                                <td>{{ $ejercicio->repeticiones ?? 'No disponible' }}</td>
-                                <td>{{ $ejercicio->descanso ?? 'No disponible' }}</td>
+                                <td>{{ $ejercicio->nombre }}</td>
+                                <td>{{ $ejercicio->tipoEjercicio->nombre ?? 'No especificado' }}</td>
+                                <td>{{ $ejercicio->series }}</td>
+                                <td>{{ $ejercicio->repeticiones }}</td>
+                                <td>{{ $ejercicio->descanso }}</td>
                             </tr>
                             @endforeach
+                            @else
+                            <tr>
+                                <td colspan="5">No hay ejercicios asociados a este plan.</td>
+                            </tr>
+                            @endif
+
+
                         </tbody>
                     </table>
                 </div>
@@ -127,7 +134,7 @@
                         volver
                     </button>
                 </div>
-                
+
             </div>
         </div>
         </div>
