@@ -59,11 +59,9 @@ class PlanNutricionalController extends Controller
 
         // Obtén todos los ejercicios con sus relaciones (tipo de ejercicio y días)
 
-        $ejercicios = Ejercicio::with(['ejercicios', 'tipoEjercicio', 'dias'])->findOrFail($id);
-
-
-        //dd($planNutricional);
-        return view('plan_nutricional.plan_nutricional', compact('planNutricional'));
+        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias', 'ejercicios'])->findOrFail($id,'id_planNutricional');
+        //dd($ejercicios);
+        return view('plan_nutricional.plan_nutricional', compact('planNutricional','ejercicios'));
     }
     public function generarPDF($id)
     {
