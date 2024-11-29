@@ -4,6 +4,23 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
+class TipoExam extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        //
+    }
+}
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\TipoExamen;
@@ -30,11 +47,12 @@ class TipoExam extends Seeder
                 'nombre' => 'Renales'
             ]);
             TipoExamen::create([
-                'nombre' => 'Respiratoria'
+                'nombre' => 'Respiratorias'
             ]);
             TipoExamen::create([
-                'nombre' => 'Ninguno'
+                'nombre' => 'Endocrinos'
             ]);
+           
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
