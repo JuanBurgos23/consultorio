@@ -22,7 +22,7 @@ class Consulta extends Model
     ];
     public function imc()
     {
-        return $this->belongsTo(IMC::class, 'id_imc');
+        return $this->belongsTo(Imc::class, 'id_imc');
     }
     public function condicion()
     {
