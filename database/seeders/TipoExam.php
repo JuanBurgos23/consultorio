@@ -32,6 +32,9 @@ class TipoExam extends Seeder
             TipoExamen::create([
                 'nombre' => 'Respiratoria'
             ]);
+            TipoExamen::create([
+                'nombre' => 'Ninguno'
+            ]);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
