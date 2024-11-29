@@ -12,6 +12,7 @@ use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\PlanNutricionalController;
 use App\Http\Controllers\ReportarController;
 use App\Models\Ejercicio;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRole;
 use App\Models\PlanNutricional;
@@ -34,6 +35,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+
+
 
 
 //perfil

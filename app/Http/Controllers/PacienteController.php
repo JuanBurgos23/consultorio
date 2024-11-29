@@ -76,4 +76,6 @@ class PacienteController extends Controller
         // Redirigir con un mensaje de éxito
         return redirect()->route('perfil')->with('success', 'Datos del usuario y paciente actualizados correctamente');
     }
+
+    
 }

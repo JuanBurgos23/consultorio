@@ -145,13 +145,35 @@
                 <!-- Imagen 5 -->
                 <div class="col-md-6">
                     <div class="card h-100 shadow">
-                        <img src="vendors/images/periodo.jpg" class="card-img-top" alt="Periodo">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Periodo</h5>
-                            <p class="card-text">
-                                Cumple a cabalidad los periodos de tiempo adecuados para tus dietas y rutinas de ejercicios.
-                            </p>
-                        </div>
+                    <div class="container mt-5">
+    <h2 class="text-center mb-4">Lista de Pacientes</h2>
+
+    @if(isset($pacientes) && $pacientes->isNotEmpty())
+        <div class="list-group">
+            @foreach($pacientes as $paciente)
+                <div class="list-group-item d-flex align-items-center shadow-sm p-2 mb-2 bg-white rounded">
+                    <!-- Imagen del usuario -->
+                    <img 
+                     src="{{ asset('src/images/R.jpeg') }}"
+                        alt="Imagen del usuario" 
+                        class="rounded-circle mr-3" 
+                        style="width: 40px; height: 40px; object-fit: cover;">
+                    
+                    <!-- Información del usuario -->
+                    <div class="ml-2">
+                        <h6 class="mb-1" style="font-size: 14px;">{{ $paciente->nombre }}</h6>
+                        <p class="mb-0 text-muted" style="font-size: 12px;">{{ $paciente->user->email }}</p>
+                        <p class="mb-0 text-muted" style="font-size: 12px;">{{ $paciente->celular }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <p class="text-center">No hay pacientes registrados en el sistema.</p>
+    @endif
+</div>
+
+
                     </div>
                 </div>
             </div>
@@ -162,5 +184,7 @@
             </footer>
         </div>
     </div>
+    <!--asdasdasdasdas -->
+    
     </body>
 </x-layout>

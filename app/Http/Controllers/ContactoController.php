@@ -62,4 +62,7 @@ class ContactoController extends Controller
         return redirect()->route('reportar')->with('info', 'Tu mensaje ha sido enviado correctamente!!');
 
     }
+
+   
+    
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Paciente;
 class HomeController extends Controller
 {
     /**
@@ -23,7 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard.dashboard');
+        // Obtener todos los pacientes
+        $pacientes = Paciente::with('user')->get(); 
+        // Pasar los pacientes a la vista
+        return view('dashboard.dashboard', compact('pacientes'));
+        
     }
     
 }
