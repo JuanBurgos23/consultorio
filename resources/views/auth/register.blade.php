@@ -70,7 +70,10 @@
                                             <label class="col-sm-4 col-form-label">Correo</label>
                                             <div class="col-sm-8">
                                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
+                                                 <!-- Mensaje de recomendación -->
+                                                 <small class="form-text text-muted">
+                                                    Se recomienda usar un correo con el dominio <strong>@correo.nutria.bo</strong> para una mejor experiencia.
+                                                </small>
                                                 @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
