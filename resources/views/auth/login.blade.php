@@ -39,7 +39,7 @@
 <div class="login-header box-shadow">
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <div class="brand-logo">
-            <a href="login.html" class="d-flex align-items-center">
+            <a href="/home" class="d-flex align-items-center">
                 <img src="vendors/images/favicon.png" alt="Logo" style="width: 30px; height: 30px; margin-right: 10px;">
                 <span style="font-size: 20px; font-weight: bold; color: #333;">NUTRIA</span>
             </a>
