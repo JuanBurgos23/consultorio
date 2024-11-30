@@ -1,190 +1,162 @@
 <x-layout bodyClass="g-sidenav-show bg-gray-200">
     <style>
-        /* Estilos para maximizar el espacio y mover contenido a la izquierda */
-       body {
-        Background: 100%;
-        right: 100px;
-        left: 1000%;
+        /* Estilo general */
+        body {
+            background-color: #f0f4f8; /* Fondo claro */
+        }
 
-       }
-     
-       
+        /* Ajustes generales */
         .main-container {
-            padding: 0; /* Elimina padding innecesario */
-            margin: 0 auto; /* Centra el contenido horizontalmente */
-            max-width: 80%; /* Reduce el ancho total para aprovechar el espacio */
+            padding: 0;
+            margin: 0 auto;
+            max-width: 80%;
         }
 
         .pd-ltr-20 {
-            padding: 20px; /* Márgenes laterales más pequeños */
+            padding: 20px;
         }
 
-          /* Ajustes de fondo para las imágenes */
-        .card-img-container {
-            background-color: #f7f7f7; /* Color de fondo para las imágenes */
-            padding: 10px; /* Espaciado alrededor de la imagen */
-            border-radius: 10px; /* Bordes redondeados para mejor apariencia */
-            display: flex;
-            justify-content: center; /* Centra la imagen horizontalmente */
-            align-items: center; /* Centra la imagen verticalmente */
-        }
-
-        .card-img-top {
-            max-width: 100%; /* Limita el ancho de la imagen */
-            max-height: 100%; /* Limita la altura de la imagen */
-        }
-
+        /* Ajustes para tarjetas */
         .card {
-            transition: transform 0.2s ease; /* Efecto visual al pasar el mouse */
+            transition: transform 0.2s ease;
         }
 
         .card:hover {
-            transform: scale(1.05); /* Aumenta el tamaño de la tarjeta al pasar el mouse */
+            transform: scale(1.05);
         }
-          /* Ajustes para pantallas pequeñas */
-          @media (max-width: 768px) {
-            header {
-                padding: 30px 10px;
-            }
 
+        /* Estilo para la lista de usuarios */
+        .usuarios-container {
+            max-height: 600px; /* Altura máxima del contenedor */
+            overflow-y: auto; /* Scroll vertical si excede el tamaño */
+            padding: 15px;
+            background-color: #aed6f1;
+            border: 1px solid #aed6f1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Título fijo en la lista de usuarios */
+        .usuarios-container h2 {
+            position: sticky;
+            top: 0; /* Siempre visible en la parte superior */
+            background-color: #aed6f1;
+            margin: 0;
+            padding: 10px 0;
+            z-index: 1; /* Asegura que quede por encima del contenido */
+            text-align: center;
+            border-bottom: 1px solid #ccc; /* Opcional: línea separadora */
+        }
+
+        /* Ajustes para pantallas pequeñas */
+        @media (max-width: 768px) {
             .main-container {
                 padding: 10px;
             }
-
-            .card {
-                max-width: 100%;
-            }
         }
     </style>
-  <body>
-    
-    <div class="main-container">
-        <div class="pd-ltr-20">
-            <!-- Bienvenida -->
-            <div class="card-box pd-20 height-100-p mb-30">
-                <div class="row align-items-center">
-                    <div class="col-md-4">
-                        <img src="vendors/images/banner.png" alt="Banner" class="img-fluid" />
+    <body>
+        <div class="main-container">
+            <div class="pd-ltr-20">
+                <!-- Bienvenida -->
+                <div class="card-box pd-20 height-100-p mb-30">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <img src="vendors/images/banner.png" alt="Banner" class="img-fluid" />
+                        </div>
+                        <div class="col-md-8">
+                            <h4 class="font-20 weight-500 mb-10 text-capitalize">
+                                BIENVENIDO/A
+                                <div class="weight-600 font-30 text-blue">
+                                    {{ Auth::user()->name }}!
+                                </div>
+                            </h4>
+                            <p class="font-18 max-width-600">
+                                Nos alegra que hayas elegido NUTRIA para acompañarte en tu camino hacia una vida más saludable. En nuestro sistema, te proporcionamos planes de nutrición y ejercicio personalizados, adaptados a tus necesidades y objetivos.
+                                <br>
+                                ¿Listo para empezar? ¡Tu viaje hacia un estilo de vida más saludable comienza ahora! Recuerda, en NUTRIA, cada paso cuenta.
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <h4 class="font-20 weight-500 mb-10 text-capitalize">
-                            BIENVENIDO/A
-                            <div class="weight-600 font-30 text-blue">
-                                {{ Auth::user()->name }}!
+                </div>
+
+                <!-- Contenido principal -->
+                <div class="row g-4">
+                    <!-- Lista de usuarios -->
+                    <div class="col-md-6" style="height: 500px;">
+                        <div class="card h-100" style="height: 500px;">
+                            <div class="usuarios-container" style="height: 500px;" >
+                                <h2>Usuarios de Nutria</h2>
+                                @if(isset($pacientes) && $pacientes->isNotEmpty())
+                                <div class="list-group">
+                                    @foreach($pacientes as $paciente)
+                                    <div class="list-group-item d-flex align-items-center shadow-sm p-2 mb-2 bg-white rounded" style="border: 1px solid black; ">
+                                        <!-- Imagen del usuario -->
+                                        <img src="{{ asset('src/images/file.png') }}" alt="Imagen del usuario" class="rounded-circle mr-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                        <!-- Información del usuario -->
+                                        <div class="ml-2">
+                                            <h6 class="mb-1" style="font-size: 14px;">{{ $paciente->nombre_completo }}</h6>
+                                            <p class="mb-0 text-muted" style="font-size: 12px;">{{ $paciente->user->email }}</p>
+                                            <p class="mb-0 text-muted" style="font-size: 12px;">{{ $paciente->celular }}</p>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                @else
+                                <p class="text-center">No hay pacientes registrados en el sistema.</p>
+                                @endif
                             </div>
-                        </h4>
-                        <p class="font-18 max-width-600">
-                            Nos alegra que hayas elegido NUTRIA para acompañarte en tu camino hacia una vida más saludable. En nuestro sistema, te proporcionamos planes de nutrición y ejercicio personalizados, adaptados a tus necesidades y objetivos.
-                            <br>
-                            Ya sea que estés buscando mejorar tu alimentación, perder peso, ganar músculo, o simplemente mantenerte saludable, estamos aquí para ayudarte en cada paso. Explora nuestras recomendaciones, realiza un seguimiento de tus progresos y optimiza tu bienestar de manera fácil y efectiva.
-                            <br>
-                            ¿Listo para empezar? ¡Tu viaje hacia un estilo de vida más saludable comienza ahora! Recuerda, en NUTRIA, cada paso cuenta.
-                        </p>
+                        </div>
+                    </div>
+
+                    <!-- Imagen 1 -->
+                    <div class="col-md-6" style="height: 500px;">
+                        <div class="card h-100 shadow" style="height: 500px;">
+                            <img src="vendors/images/consulta.png" class="card-img-top" alt="Consulta" style="height: 390px;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Realiza Consultas</h5>
+                                <p class="card-text">
+                                Consulta Personalizada para Mejorar tu Salud y Bienestar
+                                Accede a un plan diseñado a la medida de tus objetivos y necesidades.                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Segunda fila de imágenes -->
+                <div class="row g-4 mt-4">
+                    <!-- Imagen 2 -->
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow">
+                            <img src="vendors/images/ejercicioss.png" class="card-img-top" alt="Ejercicios" style="height: 400px;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Ejercicios</h5>
+                                <p class="card-text">
+                                    Descubre ejercicios adaptados a tu nivel y condición física para mejorar tu bienestar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Imagen 3 -->
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow">
+                        <img src="vendors/images/recetas.jpg" class="card-img-top" alt="Plan Nutricional" style="height: 400px;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Plan Nutricional</h5>
+                                <p class="card-text">
+                                    Personaliza tu plan nutricional con recetas saludables y sigue las recomendaciones para alcanzar tus metas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pie de página -->
+                <footer class="mt-5 text-center text-muted">
+                    <p>&copy; 2024 NUTRIA. Todos los derechos reservados.</p>
+                </footer>
             </div>
-    
-
-            <!-- Sección de imágenes con texto -->
-            <div class="row g-4">
-                <!-- Imagen 1 -->
-                <div class="col-md-4">
-                    <div class="card h-100 shadow">
-                        <img src="vendors/images/alimentos.jpg" class="card-img-top" alt="Plan Nutricional">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Plan Nutricional</h5>
-                            <p class="card-text">
-                                Personaliza tu plan nutricional y sigue las recomendaciones para alcanzar tus metas.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Imagen 2 -->
-                <div class="col-md-4">
-                    <div class="card h-100 shadow">
-                        <img src="vendors/images/ejercicioss.png" class="card-img-top" alt="Ejercicios">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Ejercicios</h5>
-                            <p class="card-text">
-                                Descubre ejercicios adaptados a tu nivel y condición física para mejorar tu bienestar.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Imagen 3 -->
-                <div class="col-md-4">
-                    <div class="card h-100 shadow">
-                        <img src="vendors/images/progreso.jpg" class="card-img-top" alt="Progreso">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Progreso</h5>
-                            <p class="card-text">
-                                Visualiza tu progreso en tiempo real y celebra cada logro alcanzado.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Segunda fila de imágenes -->
-            <div class="row g-4 mt-4">
-                <!-- Imagen 4 -->
-                <div class="col-md-6">
-                    <div class="card h-100 shadow">
-                        <img src="vendors/images/recetas.jpg" class="card-img-top" alt="Recetas Saludables">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Recetas Saludables</h5>
-                            <p class="card-text">
-                                Encuentra recetas deliciosas y saludables que complementan tu plan nutricional.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Imagen 5 -->
-                <div class="col-md-6">
-                    <div class="card h-100 shadow">
-                    <div class="container mt-5">
-    <h2 class="text-center mb-4">Lista de Pacientes</h2>
-
-    @if(isset($pacientes) && $pacientes->isNotEmpty())
-        <div class="list-group">
-            @foreach($pacientes as $paciente)
-                <div class="list-group-item d-flex align-items-center shadow-sm p-2 mb-2 bg-white rounded">
-                    <!-- Imagen del usuario -->
-                    <img 
-                     src="{{ asset('src/images/R.jpeg') }}"
-                        alt="Imagen del usuario" 
-                        class="rounded-circle mr-3" 
-                        style="width: 40px; height: 40px; object-fit: cover;">
-                    
-                    <!-- Información del usuario -->
-                    <div class="ml-2">
-                        <h6 class="mb-1" style="font-size: 14px;">{{ $paciente->nombre }}</h6>
-                        <p class="mb-0 text-muted" style="font-size: 12px;">{{ $paciente->user->email }}</p>
-                        <p class="mb-0 text-muted" style="font-size: 12px;">{{ $paciente->celular }}</p>
-                    </div>
-                </div>
-            @endforeach
         </div>
-    @else
-        <p class="text-center">No hay pacientes registrados en el sistema.</p>
-    @endif
-</div>
-
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pie de página -->
-            <footer class="mt-5 text-center text-muted">
-                <p>&copy; 2024 NUTRIA. Todos los derechos reservados.</p>
-            </footer>
-        </div>
-    </div>
-    <!--asdasdasdasdas -->
-    
     </body>
 </x-layout>
