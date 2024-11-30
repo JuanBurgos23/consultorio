@@ -42,6 +42,7 @@ class DiagnosticoController extends Controller
             })
             ->get();
 
+        
         // Pasar los diagnósticos a la vista
         return view('diagnostico.historial', compact('diagnosticos'));
     }
@@ -83,7 +84,7 @@ class DiagnosticoController extends Controller
         // Obtener los diagnósticos del paciente con la relación de consulta y otras relaciones necesarias
         $diagnosticos = Diagnostico::with(['consulta.imc', 'consulta.condicion', 'consulta.examen'])->findOrFail($id);
 
-
+        
         // Pasar los diagnósticos a la vista
         return view('diagnostico.detalle_historial', compact('diagnosticos'));
     }

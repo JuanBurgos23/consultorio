@@ -151,18 +151,6 @@
                                         <label for="grasaAlimento${contadorAlimentos}">Grasa:</label>
                                         <input type="text" style="border: 1px solid black;" id="grasaAlimento${contadorAlimentos}" name="alimentos[${contadorAlimentos}][grasa]" class="form-control">
                                     </div>
-                                    <div class="campo" style="flex: 1 1 calc(33.333% - 10px); max-width: calc(33.333% - 10px);">
-                                        <label for="fibraAlimento${contadorAlimentos}">Fibra:</label>
-                                        <input type="text" style="border: 1px solid black;" id="fibraAlimento${contadorAlimentos}" name="alimentos[${contadorAlimentos}][fibra]" class="form-control">
-                                    </div>
-                                    <div class="campo" style="flex: 1 1 calc(33.333% - 10px); max-width: calc(33.333% - 10px);">
-                                        <label for="vitaminaAlimento${contadorAlimentos}">Vitamina:</label>
-                                        <input type="text" style="border: 1px solid black;" id="vitaminaAlimento${contadorAlimentos}" name="alimentos[${contadorAlimentos}][vitamina]" class="form-control">
-                                    </div>
-                                    <div class="campo" style="flex: 1 1 calc(33.333% - 10px); max-width: calc(33.333% - 10px);">
-                                        <label for="potacioAlimento${contadorAlimentos}">Potacio:</label>
-                                        <input type="text" style="border: 1px solid black;" id="potacioAlimento${contadorAlimentos}" name="alimentos[${contadorAlimentos}][potacio]" class="form-control">
-                                    </div>
                                     <br>
                                     <!-- Subir Imágenes de alimentos -->
                                     <div class="campo" style="flex: 1 1 calc(33.333% - 10px); max-width: calc(33.333% - 10px);">
@@ -253,9 +241,6 @@
                                                     document.getElementById('carbohidrato_edit_alimento').value = data.carbohidrato;
                                                     document.getElementById('proteina_edit_alimento').value = data.proteina;
                                                     document.getElementById('grasa_edit_alimento').value = data.grasa;
-                                                    document.getElementById('fibra_edit_alimento').value = data.fibra;
-                                                    document.getElementById('vitamina_edit_alimento').value = data.vitamina;
-                                                    document.getElementById('potacio_edit_alimento').value = data.potacio;
                                                     document.getElementById('editFormCuarto').action = `/alimento-update/${id}`;
 
                                                     // Cargar la imagen existente en el modal
@@ -397,18 +382,7 @@
                                             <label for="proteina_edit_alimento">Proteina:</label>
                                             <input type="text" id="proteina_edit_alimento" name="proteina" class="form-control" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="fibra_edit_alimento">Fibra:</label>
-                                            <input type="text" id="fibra_edit_alimento" name="fibra" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="vitamina_edit_alimento">Vitamina:</label>
-                                            <input type="text" id="vitamina_edit_alimento" name="vitamina" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="potacio_edit_alimento">Potacio:</label>
-                                            <input type="text" id="potacio_edit_alimento" name="potacio" class="form-control" required>
-                                        </div>
+                                        
                                         <div id="imagenes_edit_container" class="d-flex flex-wrap">
                                             <!-- Imágenes existentes se cargarán aquí -->
                                         </div>

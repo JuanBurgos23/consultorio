@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MensajeNotificacion;
 use App\Models\Paciente;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,9 +36,10 @@ class PacienteController extends Controller
                 'paciente' => null // No hay paciente asociado
             ]);
         }
+        $mensajes = MensajeNotificacion::where('id_user', $user->id)->get();
 
         // Si hay paciente, retornar los datos del paciente y usuario
-        return view('perfil.perfil', compact('paciente'));
+        return view('perfil.perfil', compact('paciente','mensajes'));
     }
 
 
@@ -76,6 +78,4 @@ class PacienteController extends Controller
         // Redirigir con un mensaje de éxito
         return redirect()->route('perfil')->with('success', 'Datos del usuario y paciente actualizados correctamente');
     }
-
-    
 }

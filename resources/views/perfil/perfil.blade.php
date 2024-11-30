@@ -125,11 +125,11 @@
                                                                 @else
                                                                 <div class="form-group">
                                                                     <label>Nombre</label>
-                                                                    <input id="nameUser" name="nameUser" class="form-control form-control-lg" type="text" value="{{ $name }}">
+                                                                    <input id="nameUser" name="nameUser" class="form-control form-control-lg" type="text" value="{{ auth::user()->name }}">
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label>Correo</label>
-                                                                    <input id="emailUser" name="emailUser" class="form-control form-control-lg" type="email" value="{{ $email }}">
+                                                                    <input id="emailUser" name="emailUser" class="form-control form-control-lg" type="email" value="{{ auth::user()->email }}">
                                                                 </div>
 
                                                                 @endif

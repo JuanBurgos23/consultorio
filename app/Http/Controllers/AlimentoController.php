@@ -93,10 +93,6 @@ class AlimentoController extends Controller
         $alimento->carbohidrato = $request->carbohidrato;
         $alimento->proteina = $request->proteina;
         $alimento->grasa = $request->grasa;
-        $alimento->fibra = $request->fibra;
-        $alimento->vitamina = $request->vitamina;
-        $alimento->potacio = $request->potacio;
-
 
 
         // Manejo de una sola imagen

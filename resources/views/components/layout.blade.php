@@ -242,7 +242,7 @@
     <div class="left-side-bar">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="brand-logo">
-                <a href="login.html" class="d-flex align-items-center">
+                <a href="{{ route('dashboard') }}" class="d-flex align-items-center">
                     <img src="{{asset('vendors/images/favicon.png')}}" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
                     <span style="font-size: 30px; font-weight: bold; color: white;">NUTRIA</span>
                 </a>
