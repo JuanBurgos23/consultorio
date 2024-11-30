@@ -53,15 +53,13 @@ class PlanNutricionalController extends Controller
             'dieta.detalleDietas2.horario',   // Cargamos los horarios
             'dieta.detalleDietas2.periodo',   // Cargamos los periodos
             'dieta.detalleDietas2.dia', // Cargamos los días
-            'ejercicios.tipoEjercicio'
+            'ejercicios.tipoEjercicio',
+            'ejercicios.dias'
 
         ])->findOrFail($id);
 
-        // Obtén todos los ejercicios con sus relaciones (tipo de ejercicio y días)
-
-        $ejercicios = Ejercicio::with(['tipoEjercicio', 'dias', 'ejercicios'])->findOrFail($id,'id_planNutricional');
-        //dd($ejercicios);
-        return view('plan_nutricional.plan_nutricional', compact('planNutricional','ejercicios'));
+        
+        return view('plan_nutricional.plan_nutricional', compact('planNutricional'));
     }
     public function generarPDF($id)
     {
@@ -295,6 +293,7 @@ class PlanNutricionalController extends Controller
                     ->with('success', 'Consulta y diagnóstico registrados correctamente.');
             }
         } catch (\Exception $e) {
+            Log::info("no hay plan:");
             return redirect()->back()->with('error', 'Error al conectar con la API: ' . $e->getMessage());
         }
     }

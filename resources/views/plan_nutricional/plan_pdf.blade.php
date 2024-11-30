@@ -155,7 +155,7 @@
                 <h4>Paciente: {{ auth()->user()->paciente->nombre_completo }}</h4>
             </div>
             <div>
-                <img src="{{ public_path('storage/images/favicon.png')}}" alt="Logo de la empresa">
+                <img src="/public/vendors/images/favicon.png" alt="Logo de la empresa">
                 <h4>Nutr-IA</h4>
             </div>
         </div>

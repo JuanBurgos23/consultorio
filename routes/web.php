@@ -7,6 +7,7 @@ use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DiagnosticoController;
 use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EjercicioController;
+use App\Http\Controllers\MensajeUserController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\PlanNutricionalController;
@@ -56,6 +57,7 @@ Route::get('/diagnostico/{id}', [DiagnosticoController::class, 'mostrarDiagnosti
 //historial
 Route::get('/Historial', [DiagnosticoController::class, 'historial'])->name('historial');
 Route::get('/detalle/historial/{id}',[DiagnosticoController::class,'detalleHistorial'])->name('detalle_historial');
+    Route::get('/Historial/Fecha', [DiagnosticoController::class, 'historialRangoFecha'])->name('historialFecha');
 
 //periodo
 Route::get('/Periodo', [PeriodoController::class, 'index'])->name('periodo');
@@ -100,3 +102,9 @@ Route::get('/Reportar', [ContactoController::class, 'index'])->name('reportar');
 ;
  Route::post('/Reportar', [ContactoController::class, 'store'])->name('contactoStore');
 
+
+ //ver mensajes
+ //ver mensajes
+ Route::get('/mensajeUser/{id}', [MensajeUserController::class, 'show'])->name('mensajeUser.show');
+ Route::post('/mensajeUser/{id}/markAsRead', [MensajeUserController::class, 'markAsRead'])->name('mensajeUser.markAsRead');
+ Route::get('/mensajesUser', [MensajeUserController::class, 'mostrar'])->name('mensajesUser');

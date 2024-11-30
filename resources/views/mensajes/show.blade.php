@@ -18,13 +18,13 @@
                             <div class="pd-20 card-box height-100-p">
                                 <div class="profile-photo">
                                     <a href="modal" data-toggle="modal" data-target="#modal" class="edit-avatar"><i class="fa fa-pencil"></i></a>
-                                    <img src="vendors/images/photo1.jpg" alt="" class="avatar-photo">
+                                    <img src="{{asset('vendors/images/photo1.jpg')}}" alt="" class="avatar-photo">
                                     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-body pd-5">
                                                     <div class="img-container">
-                                                        <img id="image" src="vendors/images/photo2.jpg" alt="Picture">
+                                                        <img id="image" src="{{asset('vendors/images/photo2.jpg')}}" alt="Picture">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -76,16 +76,16 @@
                                     <div class="tab height-100-p">
                                         <ul class="nav nav-tabs customtab" role="tablist">
                                             <li class="nav-item">
-                                                <a class="nav-link active" data-toggle="tab" href="#setting" role="tab">Perfil</a>
+                                                <a class="nav-link {{ session('show_messages') ? '' : 'active' }}" data-toggle="tab" href="#setting" role="tab">Perfil</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#tasks" role="tab">Mensajes</a>
+                                                <a class="nav-link {{ session('show_messages') ? 'active' : '' }}" data-toggle="tab" href="#tasks" role="tab">Mensajes</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
 
                                             <!-- Setting Tab start -->
-                                            <div class="tab-pane fade height-100-p fade show active" id="setting" role="tabpanel">
+                                            <div class="tab-pane fade {{ session('show_messages') ? '' : 'show active' }}" id="setting" role="tabpanel">
                                                 <div class="profile-setting">
                                                     <form method="POST" action="{{ route('user-perfil') }}">
                                                         @csrf
@@ -143,55 +143,47 @@
                                                 </div>
                                             </div>
                                             <!-- Setting Tab End -->
-                                            <div class="tab-pane fade" id="tasks" role="tabpanel">
+
+                                            <div class="tab-pane fade {{ session('show_messages') ? 'show active' : '' }}" id="tasks" role="tabpanel">
                                                 <div class="pd-20 profile-task-wrap">
                                                     <div class="container pd-0">
 
                                                         <div class="profile-task-list pb-30">
                                                             <!-- Sección de Mensajes -->
+                                                            <div id="messagesSection" class="mt-3" style="">
+                                                                <div class="card card-body mx-3 mx-md-4 mt-n6">
+                                                                    <div class="row gx-4 mb-2">
+                                                                        <div class="col-md-12">
+                                                                            <h6>Mensaje de {{ $mensaje->correo_remitente }}</h6>
+                                                                            <!-- Listado de mensajes -->
 
-                                                            <div class="card card-body mx-3 mx-md-4 mt-n6">
-                                                                <div class="row gx-4 mb-2">
-                                                                    <div class="col-md-12">
-                                                                        <h6>Todos los Mensajes</h6>
-                                                                        <!-- Listado de mensajes -->
-                                                                        @foreach ($mensajes as $mensaje)
-
-                                                                        <div class="card mb-3">
-                                                                            <div class="card-body">
-                                                                                <h5 class="card-title">Nombre: {{ $mensaje->data }}</h5>
-                                                                                <p class="card-text">Asunto: {{ $mensaje->asunto }}</p>
-                                                                                <p class="card-text">Mensaje: {{ $mensaje->mensaje }}</p>
-                                                                                <p class="card-text"><small
-                                                                                        class="text-muted">{{ $mensaje->created_at->diffForHumans() }}</small>
-                                                                                </p>
+                                                                            <div class="card mb-3">
+                                                                                <div class="card-body">
+                                                                                    <h5 class="card-title">Nombre: {{ $mensaje->data }}</h5>
+                                                                                    <p class="card-text">Asunto: {{ $mensaje->asunto }}</p>
+                                                                                    <p class="card-text">Mensaje:{{ $mensaje->mensaje }}</p>
+                                                                                    <p class="card-text"><small
+                                                                                            class="text-muted">{{ $mensaje->created_at->diffForHumans() }}</small></p>
+                                                                                </div>
                                                                             </div>
+
                                                                         </div>
-
-
-                                                                        @endforeach
-
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
-                                                            <!-- Fin de la sección de Mensajes -->
                                                         </div>
-                                                    </div>
-                                                    <!-- Open Task End -->
+                                                        <!-- Open Task End -->
 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
-
-            </div>
-        </div>
-        </div>
     </main>
 </x-layout>

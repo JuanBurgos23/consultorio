@@ -44,18 +44,21 @@ class ContactoController extends Controller
                 Mail::mailer('smtp')->to($destino)->send($correo);
             }
 
-
+            //dd($destino);
             $user = User::where('email', $destino)->first();
+            
             if ($user) {
-                MensajeNotificacion::create([
-                    'id_user' => $user->id,
-                    'type' => 'message',
-                    'correo_remitente' => "{$request->correo_remitente}",
-                    'data' => "{$request->nombre}",
-                    'asunto' => "{$request->asunto}",
-                    'mensaje' => "$request->mensaje",
-                    'read' => false,
-                ]);
+                //dd($user);
+                $mensajeUser = new MensajeNotificacion();
+                $mensajeUser->id_user = $user->id;
+                $mensajeUser->type = 'message';
+                $mensajeUser->correo_remitente = $request->correo_remitente;
+                $mensajeUser->data = $request->nombre;
+                $mensajeUser->asunto = $request->asunto;
+                $mensajeUser->mensaje = $request->mensaje;
+                $mensajeUser->read = false;
+                $mensajeUser->save();
+                //dd($mensajeUser);
             }
         }
 

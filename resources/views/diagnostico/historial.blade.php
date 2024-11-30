@@ -10,6 +10,15 @@
                     <div class="container-fluid py-4">
                         <div class="col-12">
                             <h4 class="text-blue h4">Historial</h4>
+                            <form action="{{route('historialFecha')}}" method="GET">
+                                <label for="fecha_inicio">Fecha Inicio</label>
+                                <input type="date" name="fecha_inicio" required>
+                                <label for="fecha_fin">Fecha Final</label>
+                                <input type="date" name="fecha_fin" required>
+                                
+                                <button type="submit">Buscar</button>
+
+                            </form>
                             <div class="card my-4">
                                 @if(session('success'))
                                 <div class="alert alert-success">

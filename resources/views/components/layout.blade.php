@@ -94,9 +94,47 @@
             </div>
             <div class="user-notification">
                 <div class="dropdown">
-                  
+                    <a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">
+                        <i class="icon-copy dw dw-notification"></i>
+                        <span class="badge bg-danger" id="notification-count">
+                            {{ Auth::user()->mensajeNotificaciones()->where('read', false)->count() }}</span>
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        
+                        <div class="notification-list mx-h-350 customscroll">
+                            <ul>
+                                @forelse (Auth::user()->mensajeNotificaciones()->where('read', false)->get() as $notification)
+                                <li class="mb-2">
+                                    <a class="dropdown-item border-radius-md" href="javascript:;"
+                                        onclick="markAsRead(event, {{ $notification->id }})">
+                                        <div class="d-flex py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    Nuevo mensaje de: {{ $notification->data }}
+                                                </h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <i class="fa fa-clock me-1"></i>
+                                                    {{ $notification->created_at->diffForHumans() }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                @empty
+                                <li class="mb-2">
+                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                        <div class="d-flex py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    No tienes mensajes.
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                @endforelse
+
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -109,8 +147,8 @@
                         <span class="user-name">{{auth::user()->name}}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        <a class="dropdown-item" href="{{route('perfil')}}"><i class="dw dw-user1"></i> Profile</a>
-           
+                        <a class="dropdown-item" href="{{route('mensajesUser')}}"><i class="dw dw-user1"></i> Profile</a>
+
                         <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -123,7 +161,7 @@
                     </div>
                 </div>
             </div>
-          
+
         </div>
     </div>
 
@@ -318,6 +356,25 @@
     <script src="{{asset('src/plugins/datatables/js/buttons.flash.min.js')}}"></script>
     <script src="{{asset('src/plugins/datatables/js/pdfmake.min.js')}}"></script>
     <script src="{{asset('src/plugins/datatables/js/vfs_fonts.js')}}"></script>
+    <script>
+        function markAsRead(event, id) {
+            event.preventDefault();
+            fetch(`/mensajeUser/${id}/markAsRead`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Redirige a la vista del mensaje
+                        window.location.href = data.redirect_url;
+                    }
+                });
+        }
+    </script>
 
     @stack('js')
 
