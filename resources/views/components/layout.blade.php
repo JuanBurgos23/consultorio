@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('src/plugins/datatables/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('vendors/styles/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('src/plugins/jquery-steps/jquery.steps.css')}}">
+    
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -355,28 +356,36 @@
     <script src="{{asset('src/plugins/datatables/js/buttons.html5.min.js')}}"></script>
     <script src="{{asset('src/plugins/datatables/js/buttons.flash.min.js')}}"></script>
     <script src="{{asset('src/plugins/datatables/js/pdfmake.min.js')}}"></script>
-    <script src="{{asset('src/plugins/datatables/js/vfs_fonts.js')}}"></script>
-    <script>
-        function markAsRead(event, id) {
-            event.preventDefault();
-            fetch(`/mensajeUser/${id}/markAsRead`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Redirige a la vista del mensaje
-                        window.location.href = data.redirect_url;
-                    }
-                });
-        }
-    </script>
 
-    @stack('js')
+    
+    <script src="{{asset('src\plugins\datatables')}}" ></script>
+    
+    <!-- buttons for Export datatable -->
+    
+    <!-- Datatable Setting js -->
+    <script src="{{asset('vendors/scripts/datatable-setting.js')}}"></script>
+</body>
+<script>
+    function markAsRead(event, id) {
+        event.preventDefault();
+        fetch(`/mensajeUser/${id}/markAsRead`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirige a la vista del mensaje
+                    window.location.href = data.redirect_url;
+                }
+            });
+    }
+</script>
+
+@stack('js')
 
 </body>
 
