@@ -8,6 +8,10 @@ use App\Models\Paciente;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role; // Importa el modelo Role
+use Spatie\Permission\Traits\HasRoles; // Importa el trait HasRoles
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Facade;
 
 class RegisterController extends Controller
 {
@@ -68,7 +72,7 @@ class RegisterController extends Controller
             'password.confirmed' => 'Las contraseñas no coinciden.',
         ]);
     }
-    
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -106,7 +110,31 @@ class RegisterController extends Controller
                 'edad' => $data['edad'],
             ]);
         }
-
+        // Crear el usuario en el servidor de correo
+        $this->createMailUser($user['name'], $data['password']);
         return $user;
     }
-}
+
+    //crear usuario en servidor de correo
+    protected function createMailUser($username, $password)
+    {
+        $mailServer = 'correo.nutria.bo'; // Dirección IP o dominio del servidor de correo
+        $mailUser = 'root'; // Usuario con permisos sudo para ejecutar comandos
+        $keyFile = '/var/www/.ssh/nutria'; // Ruta a tu clave privada SSH
+        $knownHostsFile = '/var/www/.ssh/known_hosts'; // Ruta al archivo known_hosts de apache
+
+        // Comando para crear el usuario en el servidor de correo
+        $command = "ssh -o UserKnownHostsFile=$knownHostsFile -i $keyFile $mailUser@$mailServer 'sudo useradd --create-home --shell /bin/bash $username && echo \"$username:$password\" | sudo chpasswd' 2>&1";
+
+        // Ejecutar el comando y capturar la salida
+        exec($command, $output, $exitCode);
+
+        // Verificar el resultado
+        if ($exitCode !== 0) {
+            // Error al ejecutar el comando
+            $errorMessage = implode("\n", $output);
+            \Log::error("Failed to create mail user $username on $mailServer. Error: $errorMessage");
+        } else {
+            // Éxito al crear el usuario
+            \Log::info("Mail user $username created successfully on $mailServer.");}}
+        }

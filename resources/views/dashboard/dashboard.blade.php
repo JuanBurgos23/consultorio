@@ -2,7 +2,7 @@
     <style>
         /* Estilo general */
         body {
-            background-color: #f0f4f8; /* Fondo claro */
+            background-color: #05183c; /* Fondo claro */
         }
 
         /* Ajustes generales */
@@ -30,7 +30,7 @@
             max-height: 600px; /* Altura máxima del contenedor */
             overflow-y: auto; /* Scroll vertical si excede el tamaño */
             padding: 15px;
-            background-color: #aed6f1;
+            background-color: #05183c;
             border: 1px solid #aed6f1;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -40,7 +40,7 @@
         .usuarios-container h2 {
             position: sticky;
             top: 0; /* Siempre visible en la parte superior */
-            background-color: #aed6f1;
+            background-color: #fff;
             margin: 0;
             padding: 10px 0;
             z-index: 1; /* Asegura que quede por encima del contenido */

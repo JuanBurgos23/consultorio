@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http; // Importa la clase HTTP
 use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 
 class ConsultaController extends Controller
 {
@@ -33,7 +34,6 @@ class ConsultaController extends Controller
         return view('consulta.mostrar_consulta', compact('consultas'));
     }
 
-
     public function storeConsulta(Request $request)
     {
         // Crear la consulta
@@ -47,6 +47,37 @@ class ConsultaController extends Controller
         return redirect()->route('consulta', ['consulta_id' => $consulta->id])
             ->with('success', 'Consulta registrada. Ahora ingresa los datos adicionales.');
     }
+    public function historia(Request $request)
+    {
+        // Obtener el usuario autenticado
+        $user = auth()->user();
+    
+        // Validar las fechas solo si es necesario
+        $request->validate([
+            'fecha_inicio' => 'nullable|date',
+            'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
+        ]);
+    
+        // Parsear las fechas si están presentes
+        $fechaInicio = $request->input('fecha_inicio') ? Carbon::parse($request->input('fecha_inicio'))->startOfDay() : null;
+        $fechaFinal = $request->input('fecha_fin') ? Carbon::parse($request->input('fecha_fin'))->endOfDay() : null;
+    
+        // Obtener las consultas con sus relaciones (sin usar la relación 'consulta' dentro de sí misma)
+        $consultas = Consulta::with(['paciente', 'imc', 'condicion', 'examen']) // Relaciones correctas
+            ->when($fechaInicio && $fechaFinal, function ($query) use ($fechaInicio, $fechaFinal) {
+                // Filtrar por fecha de consulta
+                return $query->whereBetween('fecha_consulta', [$fechaInicio, $fechaFinal]);
+            })
+            ->get();
+    
+        // Pasar las consultas a la vista
+        return view('consulta.mostrar_consulta', compact('consultas'));
+    }
+    
+    
+    
+
+
 
 
     public function store(Request $request)

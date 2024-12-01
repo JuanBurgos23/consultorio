@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('genero');
             $table->integer('edad');
             $table->string('celular')->nullable();
-            $table->date('fecha_nac')->nullable();
-            $table->string('direccion')->nullable();
+           /*  $table->date('fecha_nac')->nullable();
+            $table->string('direccion')->nullable();*/
             $table->timestamps();
             $table->foreign('id_user')->references('id')->on('users');
         });

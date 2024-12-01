@@ -69,9 +69,9 @@ class PacienteController extends Controller
             $paciente->nombre = $request->name;
             $paciente->paterno = $request->paterno;
             $paciente->materno = $request->materno;
-            $paciente->fecha_nac = $request->fecha_nac;
+            //$paciente->fecha_nac = $request->fecha_nac;
             $paciente->celular = $request->celular;
-            $paciente->direccion = $request->direccion;
+            //$paciente->direccion = $request->direccion;
             $paciente->save();
         }
 

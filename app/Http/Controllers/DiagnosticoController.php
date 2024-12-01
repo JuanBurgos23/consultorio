@@ -54,6 +54,7 @@ class DiagnosticoController extends Controller
         // Verificar si el usuario tiene un paciente asociado
         $paciente = $user->paciente;
 
+
         if (!$paciente) {
             return redirect()->back()->with('error', 'No se encontró un paciente asociado.');
         }
@@ -77,6 +78,43 @@ class DiagnosticoController extends Controller
         return view('diagnostico.historial', compact('diagnosticos'));
     }
 
+    public function historialRangoEdad(Request $request)
+    {
+        // Obtener el usuario autenticado
+        $user = auth()->user();
+
+        // Verificar si el usuario tiene un paciente asociado
+        $paciente = $user->paciente;
+
+        if (!$paciente) {
+            return redirect()->back()->with('error', 'No se encontró un paciente asociado.');
+        }
+        $request->validate([
+            'edad_minima' => 'required|integer|min:0',
+            'edad_maxima' => 'required|integer|min:0|after_or_equal:fecha_inicio'
+        ]);
+        $edadMinima = $request->input('edad_minima');
+        $edadMaxima = $request->input('edad_maxima');
+        
+        // Obtener los diagnósticos del paciente con la relación de consulta y otras relaciones necesarias
+        $diagnosticos = Diagnostico::with(['consulta.imc', 'consulta.condicion', 'consulta.examen'])
+        ->whereHas('consulta.paciente', function ($query) use ($edadMinima, $edadMaxima) {
+            $query->whereBetween('edad', [$edadMinima, $edadMaxima]); // Filtrar por edad directamente
+        })
+        ->get();
+        // Pasar los diagnósticos a la vista
+        return view('consulta.mostrar_consulta', compact('diagnosticos'));
+    }
+
+
+
+
+    ////////
+   
+    ////////
+
+
+    
     public function detalleHistorial($id)
     {
 

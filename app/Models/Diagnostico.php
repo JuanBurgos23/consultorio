@@ -24,4 +24,10 @@ class Diagnostico extends Model
     {
         return $this->belongsTo(Consulta::class, 'id_consulta');
     }
+    public function paciente()
+    {
+        return $this->belongsToThrough(Paciente::class, Consulta::class);
+    }
+    
+
 }

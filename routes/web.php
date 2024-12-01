@@ -31,12 +31,15 @@ use App\Models\PlanNutricional;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('throttle:40,1');
+
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+    ->name('dashboard')
+    ->middleware('throttle:60,1');  // Limita a 60 solicitudes por minuto
 
 
 
@@ -49,6 +52,9 @@ Route::post('user-perfil', [PacienteController::class, 'actualizarPerfil'])->nam
 Route::get('Consulta', [ConsultaController::class, 'index'])->name('consulta');
 Route::get('Registro', [ConsultaController::class, 'registro'])->name('registro');
 Route::get('Consultas', [ConsultaController::class, 'mostrarConsultas'])->name('mostrar_consulta');
+
+Route::get('Consultas/Fecha', [ConsultaController::class, 'historia'])->name('historialconsulta');
+
 Route::post('Registrar/Consulta', [ConsultaController::class, 'storeConsulta'])->name('registrar_consulta');
 Route::post('Registrar/Adicional', [ConsultaController::class, 'store'])->name('registrar_adicional');
 
@@ -57,7 +63,11 @@ Route::get('/diagnostico/{id}', [DiagnosticoController::class, 'mostrarDiagnosti
 //historial
 Route::get('/Historial', [DiagnosticoController::class, 'historial'])->name('historial');
 Route::get('/detalle/historial/{id}',[DiagnosticoController::class,'detalleHistorial'])->name('detalle_historial');
-    Route::get('/Historial/Fecha', [DiagnosticoController::class, 'historialRangoFecha'])->name('historialFecha');
+//nwew 
+Route::get('/Historial/Fecha', [DiagnosticoController::class, 'historialRangoFecha'])->name('historialFecha');
+Route::get('/Historial/Edad', [DiagnosticoController::class, 'historialRangoEdad'])->name('historialEdad');
+
+
 
 //periodo
 Route::get('/Periodo', [PeriodoController::class, 'index'])->name('periodo');

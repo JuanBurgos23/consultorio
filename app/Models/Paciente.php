@@ -19,9 +19,9 @@ class Paciente extends Model
         'materno',
         'genero',
         'edad',
-        'fecha_nac',
+       // 'fecha_nac',
         'celular',
-        'direccion'
+        //'direccion'
     ];
     public function user()
     {
@@ -33,8 +33,8 @@ class Paciente extends Model
         return "{$this->nombre} {$this->paterno} {$this->materno}";
     }
 
-    public function getEdadAttribute()
+    /*public function getEdadAttribute()
     {
         return Carbon::parse($this->fecha_nac)->age; // Calcula la edad
-    }
+    }*/
 }

@@ -53,14 +53,14 @@
                                             <span>Celular:</span>
                                             {{$paciente->celular ?? 'N/A'}}
                                         </li>
-                                        <li>
+                                      <!--  <li>
                                             <span>Fecha de Nacimiento:</span>
                                             {{$paciente->fecha_nac ?? 'N/A'}}
                                         </li>
                                         <li>
                                             <span>Direccion:</span>
                                             {{$paciente->direccion ?? 'N/A'}}
-                                        </li>
+                                        </li> -->
                                         @endif
 
 
@@ -110,18 +110,18 @@
                                                                     <label>Email</label>
                                                                     <input id="email" name="email" class="form-control form-control-lg" type="email" value="{{ $paciente->user->email }}">
                                                                 </div>
-                                                                <div class="form-group">
+                                                               <!-- <div class="form-group">
                                                                     <label>Fecha de Nacimiento</label>
                                                                     <input id="fecha_nac" name="fecha_nac" class="form-control form-control-lg" type="date" value="{{ $paciente->fecha_nac ?? 'N/A' }}">
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="form-group">
                                                                     <label>Celular</label>
                                                                     <input id="celular" name="celular" class="form-control form-control-lg" type="text" value="{{ $paciente->celular ?? 'N/A' }}">
                                                                 </div>
-                                                                <div class="form-group">
+                                                               <!-- <div class="form-group">
                                                                     <label>Dirección</label>
                                                                     <textarea id="direccion" name="direccion" class="form-control">{{ $paciente->direccion ?? 'N/A' }}</textarea>
-                                                                </div>
+                                                                </div> -->
                                                                 @else
                                                                 <div class="form-group">
                                                                     <label>Nombre</label>
